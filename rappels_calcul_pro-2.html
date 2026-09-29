@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rappels de calcul professionnel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Charte Stud'Éval : blanc, bleu #2F63F5, bleus très clairs, gris bleutés, encre #0B1526 */
+  --bg:#F4F7FE; --card:#ffffff; --panel:#F0F4FE; --ink:#0B1526; --muted:#56637A; --faint:#8D99AF;
+  --line:#E3E9F4; --line-strong:#CAD5E8;
+  --blue:#2F63F5; --blue-hover:#2552D8; --on-blue:#ffffff; --blue-soft:#EBF1FE; --blue-line:#C6D4FD; --blue-mid:#6091FA;
+  --green:#15834B; --on-green:#ffffff; --green-soft:#E9F7EF; --green-line:#A9DCBF;
+  --red:#C24A40; --red-soft:#FDF1EF; --red-line:#F2C6C0;
+  --shadow:0 1px 2px rgba(11,21,38,.04),0 10px 28px rgba(47,99,245,.07);
+  --sans:"Source Sans 3",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4","Cambria","Georgia","Times New Roman",serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,input{font-family:inherit}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px 72px}
+
+/* en-tête */
+.top{margin-bottom:22px}
+.top[hidden]{display:none}
+.top-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.brand{font-size:1.15rem;font-weight:700;letter-spacing:-.005em}
+.count{color:var(--muted);font-variant-numeric:tabular-nums;font-size:1rem}
+.count b{color:var(--ink);font-weight:600}
+.bar{height:6px;border-radius:99px;background:var(--blue-soft);overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--blue);border-radius:99px;transition:width .5s ease}
+.parts{list-style:none;padding:0;margin:14px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.parts li{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--card);font-size:.84rem;color:var(--muted);line-height:1.25}
+.parts .pn{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-strong);font-weight:600;font-size:.76rem}
+.parts li.cur{border-color:var(--blue-line);background:var(--blue-soft);color:var(--ink);font-weight:600}
+.parts li.cur .pn{background:var(--blue);border-color:var(--blue);color:var(--on-blue)}
+.parts li.fin .pn{background:var(--green-soft);border-color:var(--green-line);color:var(--green)}
+@media (max-width:700px){.parts{grid-template-columns:1fr}}
+
+/* carte */
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 34px}
+@media (max-width:600px){.card{padding:22px 18px}.wrap{padding:18px 12px 56px}body{font-size:17px}}
+.kicker{font-size:.9rem;font-weight:600;color:var(--blue);margin:0}
+h1{font-size:2.05rem;line-height:1.15;letter-spacing:-.02em;margin:6px 0 10px}
+h2{font-size:1.5rem;line-height:1.2;letter-spacing:-.01em;margin:6px 0 18px}
+h3{font-size:1.02rem;font-weight:600;margin:0 0 14px;line-height:1.35}
+h3 .sn{color:var(--blue);font-weight:700;margin-right:.35em}
+p{margin:0 0 12px}
+.lead{font-size:1.12rem;margin-bottom:22px}
+.small{font-size:.92rem;color:var(--muted)}
+.enonce{font-size:1.12rem;line-height:1.6;margin:12px 0 0;padding:16px 20px;background:var(--panel);border-radius:10px;border-left:3px solid var(--blue)}
+
+/* étapes */
+.step{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.step.is-done{margin-top:16px;padding-top:14px}
+.done{display:flex;gap:12px;align-items:flex-start}
+.chk{flex:none;width:24px;height:24px;border-radius:50%;background:var(--green-soft);color:var(--green);border:1px solid var(--green-line);display:grid;place-items:center;font-size:.78rem;font-weight:700;margin-top:1px}
+.done-b{min-width:0;flex:1}
+.done-k{font-size:.86rem;color:var(--muted);font-weight:600;margin-bottom:2px}
+.done-note{font-size:.86rem;color:var(--muted);margin-top:4px}
+.hint{font-size:.94rem;color:var(--muted);margin:-4px 0 12px}
+
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.options{grid-template-columns:1fr}}
+.opt{appearance:none;text-align:left;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);border-radius:10px;padding:13px 16px;font-size:1rem;line-height:1.4;cursor:pointer;transition:border-color .15s,background-color .15s}
+.opt:hover:not(:disabled){border-color:var(--blue);background:var(--blue-soft)}
+.opt:focus-visible{outline:3px solid var(--blue-line);outline-offset:2px}
+.opt.wrong{border-color:var(--red-line);background:var(--red-soft);color:var(--muted);cursor:default}
+.opt:disabled{cursor:default}
+.fopt{display:flex;gap:14px;align-items:flex-start;padding:14px 16px}
+.letter{flex:none;width:28px;height:28px;border-radius:7px;background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-line);font-weight:700;display:grid;place-items:center;font-size:.9rem}
+.opt.wrong .letter{background:transparent;border-color:var(--red-line);color:var(--red)}
+.ftxt{min-width:0;display:block}
+.flhs{display:block;font-weight:600;font-size:.95rem;margin-bottom:4px}
+.frhs{display:block;overflow-x:auto}
+
+.fb:empty{display:none}
+.fb{margin-top:14px}
+.msg{padding:11px 15px;border-radius:9px;font-size:.97rem;line-height:1.5;margin-top:8px}
+.msg:first-child{margin-top:0}
+.msg.err{background:var(--red-soft);border:1px solid var(--red-line);border-left:3px solid var(--red)}
+.msg.help{background:var(--blue-soft);border:1px solid var(--blue-line);border-left:3px solid var(--blue)}
+
+/* formules */
+.fscroll{overflow-x:auto;padding:4px 2px;-webkit-overflow-scrolling:touch}
+.fbox{display:inline-block;white-space:nowrap;font-family:var(--serif);font-size:1.14rem;line-height:2}
+.fbox.big{font-size:1.26rem}
+.fbox .lhs{font-family:var(--sans);font-weight:600;font-size:.94em}
+.op{margin:0 .34em}
+.mv{font-style:italic}
+sup{font-size:.68em;vertical-align:super;line-height:0}
+.rad{display:inline-flex;align-items:stretch;vertical-align:middle}
+.rad .sign{font-size:1.25em;line-height:1}
+.rad .under{border-top:1.5px solid currentColor;padding:.12em .3em 0;margin-left:-.06em}
+.formline{margin-bottom:10px}
+.fl-k{display:block;font-size:.86rem;color:var(--muted);font-weight:600;margin-bottom:2px}
+@media (max-width:600px){
+  .fbox{font-size:1.04rem}.fbox.big{font-size:1.1rem}
+  .fbox .lhs{display:block;line-height:1.5}
+  .fbox .lhs + .op{margin-left:0}
+}
+
+.slot{font-family:var(--sans);font-size:1rem;width:5.6em;padding:.28em .4em;text-align:center;border:1.5px solid var(--line-strong);border-radius:7px;background:var(--card);color:var(--ink);font-variant-numeric:tabular-nums;vertical-align:middle;margin:2px 0}
+.slot::placeholder{color:var(--faint);font-style:italic}
+.slot:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.slot.lg{width:9.5em;font-size:1.1rem;padding:.36em .6em}
+.slot.good{border-color:var(--green);background:var(--green-soft)}
+.slot.bad{border-color:var(--red);background:var(--red-soft)}
+.slot:disabled{opacity:1;color:var(--ink)}
+.answer{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.answer .lab{font-weight:600}
+.unit{font-weight:600}
+
+/* boutons */
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+.btn{appearance:none;border:1px solid var(--blue);background:var(--blue);color:var(--on-blue);font-weight:600;font-size:1rem;padding:10px 20px;border-radius:9px;cursor:pointer;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--blue-hover);border-color:var(--blue-hover)}
+.btn:focus-visible{outline:3px solid var(--blue-line);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--blue);border-color:var(--blue-line)}
+.btn.ghost:hover{background:var(--blue-soft)}
+.btn.quiet{background:transparent;color:var(--muted);border-color:var(--line-strong);font-weight:500}
+.btn.quiet:hover{background:var(--panel);color:var(--ink)}
+
+/* correction */
+.corr{margin-top:24px;padding:20px 22px;border-radius:12px;border:1px solid var(--green-line);background:var(--green-soft)}
+.corr.shown{border-color:var(--blue-line);background:var(--blue-soft)}
+.c-head{font-weight:700;color:var(--green);margin-bottom:8px;font-size:1.05rem}
+.corr.shown .c-head{color:var(--blue)}
+.c-phrase{font-weight:600;margin:12px 0 0}
+.c-note{font-size:.92rem;color:var(--muted);margin:8px 0 0}
+
+/* figure */
+.figwrap{display:flex;gap:20px;align-items:stretch;flex-wrap:wrap;margin-top:12px}
+.figwrap .enonce{flex:1 1 320px;margin:0}
+.figcol{flex:1 1 300px;max-width:400px;display:flex}
+.fig{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px;display:flex;align-items:center}
+.fig svg{display:block;width:100%;height:auto}
+.fig .tr{fill:#fff}
+.fig .side{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round}
+.fig .side.cherche{stroke:var(--blue);stroke-width:3.5}
+.fig .side.trouve{stroke:var(--green);stroke-width:3.5}
+.fig .aux{fill:none;stroke:var(--line-strong);stroke-width:1.5;stroke-dasharray:4 4}
+.fig .sol{stroke:var(--line-strong);stroke-width:3;stroke-linecap:round}
+.fig .ang{fill:none;stroke:var(--muted);stroke-width:1.8}
+.fig .ang.ok{stroke:var(--green)}
+.fig .ang.ko{stroke:var(--red)}
+.fig text{font-family:var(--sans);font-size:15px;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+.fig text.nom{font-size:12.5px;fill:var(--muted)}
+.fig text.lett{font-family:var(--serif);font-style:italic}
+.fig .bleu{fill:var(--blue)}
+.fig .vert{fill:var(--green)}
+.fig .rouge{fill:var(--red)}
+.fig .trace{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:trace .7s ease forwards}
+.fig .app{opacity:0;animation:app .45s ease forwards}
+.fig .d1{animation-delay:.25s}.fig .d2{animation-delay:.45s}.fig .d3{animation-delay:.65s}.fig .d4{animation-delay:.85s}
+@keyframes trace{to{stroke-dashoffset:0}}
+@keyframes app{to{opacity:1}}
+.fig .carre{opacity:0;animation:pop .5s ease forwards}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+
+/* accueil */
+.mods{display:grid;gap:12px;margin:18px 0 0}
+.mod{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--card)}
+.mod.on{border-color:var(--blue-line);background:var(--blue-soft)}
+.mod .num{flex:none;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-weight:700;background:var(--card);border:1px solid var(--line-strong);color:var(--muted)}
+.mod.on .num{background:var(--blue);border-color:var(--blue);color:var(--on-blue)}
+.mod h4{margin:0 0 2px;font-size:1.05rem}
+.mod p{margin:0;font-size:.95rem;color:var(--muted)}
+.key{margin:22px 0;padding:18px 22px;border-radius:12px;background:var(--blue-soft);border:1px solid var(--blue-line)}
+.key p{margin:0}
+.key strong{display:block;font-size:1.14rem;line-height:1.4;margin-top:4px}
+.key.soft{padding:14px 18px;margin:20px 0}
+.flow{margin:0 0 18px;padding:0;list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;counter-reset:f}
+.flow li{counter-increment:f;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.9rem;line-height:1.3;background:var(--card)}
+.flow li::before{content:counter(f);display:block;font-weight:700;color:var(--blue);margin-bottom:2px}
+@media (max-width:700px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* présentation de partie */
+.prow{display:grid;grid-template-columns:170px minmax(0,1fr);gap:18px;padding:14px 0;border-top:1px solid var(--line)}
+.prow:first-child{border-top:0;padding-top:0}
+.pk{font-weight:600;color:var(--muted);font-size:.95rem;padding-top:2px}
+@media (max-width:600px){.prow{grid-template-columns:1fr;gap:4px}}
+.ex-p{font-weight:600;margin:6px 0 0}
+.warn{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 8px 8px 0;font-size:.96rem}
+
+/* bilan */
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:6px 0 10px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--card)}
+.stat .v{font-size:1.6rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat .l{font-size:.86rem;color:var(--muted);line-height:1.3}
+.stat.main{grid-column:1/-1;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;background:var(--blue-soft);border-color:var(--blue-line)}
+.stat.main .v{font-size:2.1rem;color:var(--blue)}
+.stat.main .l{font-size:1rem;color:var(--ink)}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sect{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+.maprow{display:flex;align-items:center;gap:12px;margin:7px 0;flex-wrap:wrap}
+.maprow .ml{width:5.6em;font-size:.9rem;color:var(--muted)}
+.cells{display:flex;gap:6px}
+.cell{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-size:.84rem;font-weight:600;border:1px solid var(--line-strong);color:var(--faint);font-variant-numeric:tabular-nums}
+.cell.p{background:var(--green);border-color:var(--green);color:var(--on-green)}
+.cell.e{background:var(--green-soft);border-color:var(--green-line);color:var(--green)}
+.cell.r{background:var(--red-soft);border-color:var(--red-line);color:var(--red)}
+.legend-row{display:flex;gap:18px;flex-wrap:wrap;font-size:.86rem;color:var(--muted);margin-top:10px}
+.legend-row span{display:inline-flex;align-items:center;gap:6px}
+.legend-row i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid var(--line-strong)}
+.legend-row i.p{background:var(--green);border-color:var(--green)}
+.legend-row i.e{background:var(--green-soft);border-color:var(--green-line)}
+.legend-row i.r{background:var(--red-soft);border-color:var(--red-line)}
+.synth{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.synth{grid-template-columns:1fr}}
+.sbox{border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+.sbox h4{margin:0 0 6px;font-size:1rem}
+.reflex{margin:0;padding-left:1.4em}
+.reflex li{padding:3px 0}
+
+
+/* module 2 : escalier des unités et schémas d’échelle */
+.fig .eu{fill:#fff;stroke:var(--line-strong);stroke-width:1.2}
+.fig .eu.de{fill:var(--blue-soft);stroke:var(--blue)}
+.fig .eu.vers{fill:var(--green-soft);stroke:var(--green)}
+.fig text.eut{font-size:14px;font-weight:600}
+.fig .fleche{fill:none;stroke:var(--blue);stroke-width:2}
+.fig .pointe{fill:var(--blue);stroke:none}
+.fig text.grand{font-size:19px;font-weight:700;fill:var(--blue)}
+.fig text.petit{font-size:13px}
+.fig .barp{fill:var(--blue-soft);stroke:var(--blue)}
+.fig .barr{fill:var(--blue);stroke:var(--blue)}
+.fig text.surbar{fill:#fff;stroke:none}
+.opt.centre{text-align:center;font-size:1.15rem;font-weight:600;font-variant-numeric:tabular-nums}
+.mod{align-items:flex-start}
+.mod-b{flex:1}
+.mod .actions{margin-top:10px}
+.etat{display:inline-block;margin-top:6px;font-size:.85rem;color:var(--muted);border:1px solid var(--line-strong);border-radius:99px;padding:2px 10px;background:var(--card)}
+.etat.fin{color:var(--green);border-color:var(--green-line);background:var(--green-soft)}
+.flow.flow4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:700px){.flow.flow4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* fiche d’énoncé du module 2 */
+.fiche{margin:12px 0 0;padding:16px 20px;background:var(--panel);border-radius:10px;border-left:3px solid var(--blue)}
+.fiche-k{font-size:.86rem;color:var(--muted);font-weight:600;margin-bottom:6px}
+.fiche-l{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;font-family:var(--serif);font-size:1.5rem}
+.fiche-l .nbr{font-weight:600}
+.fiche-l .fl{color:var(--muted)}
+.fiche-l .cible,.don .cible{color:var(--blue);font-weight:600}
+.don{display:flex;gap:28px;flex-wrap:wrap;margin:0}
+.don dt{font-size:.84rem;color:var(--muted);font-weight:600}
+.don dd{margin:0;font-family:var(--serif);font-size:1.3rem}
+/* tableau de conversion */
+.tconv-wrap{overflow-x:auto;padding:4px 0 0}
+.tconv{border-collapse:collapse;margin:8px auto 0}
+.tconv th{font-size:.84rem;color:var(--muted);font-weight:600;padding:4px 2px 6px;text-align:center;border-bottom:1px solid var(--line-strong)}
+.tconv th.cde{color:var(--blue)}
+.tconv th.cvers{color:var(--green)}
+.tconv td.c{border:1px solid var(--line-strong);width:36px;height:42px;padding:0;text-align:center;background:var(--card)}
+.tconv td.sep{border-left:2px solid var(--line-strong)}
+.tconv td.virg{border-right:3px solid var(--blue)}
+.tconv td.ok{background:var(--green-soft)}
+.tconv td.bad{background:var(--red-soft)}
+.tconv .cellbtn{width:100%;height:40px;border:0;background:transparent;cursor:pointer}
+.tconv .cellbtn:hover{background:var(--blue-soft)}
+.tconv .cellin{width:100%;height:40px;border:0;background:transparent;text-align:center;font-size:1.15rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+.tconv .cellin:focus{outline:2px solid var(--blue);outline-offset:-2px}
+.tconv .cellv{display:block;line-height:42px;font-size:1.15rem;font-variant-numeric:tabular-nums}
+.tconv-note{font-size:.84rem;color:var(--muted);text-align:center;margin:6px 0 0}
+
+.reveal{animation:appear .28s ease both}
+@keyframes appear{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  .reveal{animation:none}.bar span{transition:none}
+  .fig .trace,.fig .app,.fig .carre{animation:none;stroke-dashoffset:0;opacity:1}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top" id="hdr" hidden>
+    <div class="top-row">
+      <div class="brand" id="hdr-brand">Rappel</div>
+      <div class="count" id="hdr-count"></div>
+    </div>
+    <div class="bar" id="hdr-bar" role="progressbar" aria-label="Progression" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0"><span></span></div>
+    <ol class="parts" id="hdr-parts"></ol>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ utilitaires ============ */
+const NBSP="\u00a0", NNBSP="\u202f";
+const $=(s,r)=>(r||document).querySelector(s);
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+function typo(s){
+  return String(s)
+    .replace(/(\d) (?=\d{3}\b)/g,"$1"+NNBSP)
+    .replace(/ (mm|m|cm|%)\b/g,NBSP+"$1")
+    .replace(/« /g,"«"+NBSP).replace(/ »/g,NBSP+"»")
+    .replace(/ ([?!:;])/g,NBSP+"$1");
+}
+function nb(x,dec){ return Number(x).toLocaleString("fr-FR",{minimumFractionDigits:dec||0,maximumFractionDigits:dec===undefined?4:dec}); }
+function fmtL(x,s){ return s.unite==="mm" ? nb(Math.round(x)) : nb(arr(x,2),2); }
+function fmtLU(x,s){ return fmtL(x,s)+NBSP+s.unite; }
+function fmtC(x,s){ return s.unite==="mm" ? nb(Math.round(x)) : nb(x); }
+function fmtCU(x,s){ return fmtC(x,s)+NBSP+s.unite+"²"; }
+const arr=(x,d)=>{ const p=Math.pow(10,d); return Math.round((x+Number.EPSILON)*p)/p; };
+function parseNum(str){
+  let s=String(str).trim().replace(/[\s\u00a0\u202f]/g,"");
+  s=s.replace(/(mm²|m²|mm|cm|m)$/i,"").replace(",",".");
+  if(!/^[+-]?(\d+(\.\d*)?|\.\d+)$/.test(s)) return NaN;
+  return parseFloat(s);
+}
+function numbersIn(t){
+  return (t.match(/\d+(?:[ \u202f\u00a0]\d{3})*(?:,\d+)?/g)||[])
+    .map(x=>parseFloat(x.replace(/[ \u202f\u00a0]/g,"").replace(",",".")));
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* ============ écriture mathématique ============ */
+const V=l=>`<span class="mv">${l}</span>`;
+const sq=x=>`${x}<sup>2</sup>`;
+function racine(inner){ return `<span class="rad"><span class="sign">√</span><span class="under">${inner}</span></span>`; }
+function eqHTML(lhs,right,cls){ return `<div class="fscroll"><span class="fbox ${cls||""}"><span class="lhs">${lhs}</span><span class="op">=</span>${right}</span></div>`; }
+
+/* ============ les trois relations ============ */
+const RELS={
+  A:{ titre:"Je cherche l’hypoténuse", html:`${sq(V("c"))}<span class="op">=</span>${sq(V("a"))}<span class="op">+</span>${sq(V("b"))}` },
+  B:{ titre:"Je cherche un côté de l’angle droit", html:`${sq(V("a"))}<span class="op">=</span>${sq(V("c"))}<span class="op">−</span>${sq(V("b"))}` },
+  C:{ titre:"Je vérifie si l’angle est droit", html:`comparer ${sq(V("a"))}<span class="op">+</span>${sq(V("b"))} et ${sq(V("c"))}` },
+  D:{ titre:"Je cherche le périmètre", html:`${V("p")}<span class="op">=</span>${V("a")}<span class="op">+</span>${V("b")}<span class="op">+</span>${V("c")}` }
+};
+const REL_OF={1:"A",2:"B",3:"C"};
+
+/* ============ les 12 situations ============
+   h = côté horizontal, v = côté vertical, hyp = hypoténuse
+   chaque côté : {l: lettre, nom: rôle dans le contexte, val: mesure}
+   cherche : "c" (hypoténuse), "a" (côté de l’angle droit) ou "verif"
+   cas : 1 = hypoténuse, 2 = côté de l’angle droit, 3 = vérification
+=================================================== */
+const SITS_P=[
+/* ---- Partie 1 : chercher l’hypoténuse ---- */
+{ cas:1, fig:"rect", unite:"mm", cherche:"c",
+  texte:"Un caisson de cuisine mesure 600 mm de largeur et 800 mm de hauteur. Avant de fixer le fond, on vérifie l’équerrage en mesurant la diagonale. Quelle longueur la diagonale doit-elle avoir ?",
+  h:{l:"a",nom:"largeur",val:600}, v:{l:"b",nom:"hauteur",val:800}, hyp:{l:"c",nom:"diagonale",val:1000},
+  phrase:"La diagonale du caisson doit mesurer {R}." },
+{ cas:1, fig:"rect", unite:"m", cherche:"c",
+  texte:"Une cloison à ossature mesure 1,20 m de largeur et 1,60 m de hauteur. On veut y poser une écharpe de contreventement, en diagonale d’un angle à l’autre. Quelle doit être sa longueur ?",
+  h:{l:"a",nom:"largeur",val:1.20}, v:{l:"b",nom:"hauteur",val:1.60}, hyp:{l:"c",nom:"écharpe",val:2.00},
+  phrase:"L’écharpe de contreventement doit mesurer {R}." },
+{ cas:1, fig:"tri", unite:"m", cherche:"c", sol:true,
+  texte:"Un rampant de toiture s’élève de 1,25 m sur une portée horizontale de 3,00 m. Quelle est la longueur du rampant ?",
+  h:{l:"a",nom:"portée",val:3.00}, v:{l:"b",nom:"élévation",val:1.25}, hyp:{l:"c",nom:"rampant",val:3.25},
+  phrase:"Le rampant mesure {R}." },
+{ cas:1, fig:"rect", unite:"m", cherche:"c", arrondi:2,
+  texte:"Un établi mesure 2,00 m de longueur et 0,80 m de largeur. On veut le faire passer en diagonale dans un couloir : quelle est la longueur de sa diagonale ? Arrondis au centimètre.",
+  h:{l:"a",nom:"longueur",val:2.00}, v:{l:"b",nom:"largeur",val:0.80}, hyp:{l:"c",nom:"diagonale",val:Math.sqrt(4.64)},
+  phrase:"La diagonale de l’établi mesure environ {R}." },
+
+/* ---- Partie 2 : chercher un côté de l’angle droit ---- */
+{ cas:2, fig:"tri", unite:"m", cherche:"a", arrondi:2, sol:true, mur:true,
+  texte:"Une échelle de 4,00 m est appuyée contre un mur. Son pied est posé à 1,20 m du mur. À quelle hauteur l’échelle touche-t-elle le mur ? Arrondis au centimètre.",
+  h:{l:"b",nom:"pied au mur",val:1.20}, v:{l:"a",nom:"hauteur",val:Math.sqrt(14.56)}, hyp:{l:"c",nom:"échelle",val:4.00},
+  phrase:"L’échelle touche le mur à environ {R} de hauteur." },
+{ cas:2, fig:"rect", unite:"m", cherche:"a",
+  texte:"Un panneau rectangulaire mesure 2,00 m de longueur. Sa diagonale mesure 2,50 m. Quelle est sa largeur ?",
+  h:{l:"b",nom:"longueur",val:2.00}, v:{l:"a",nom:"largeur",val:1.50}, hyp:{l:"c",nom:"diagonale",val:2.50},
+  phrase:"Le panneau mesure {R} de largeur." },
+{ cas:2, fig:"rect", unite:"mm", cherche:"a",
+  texte:"Un châssis vitré mesure 1 200 mm de hauteur et sa diagonale mesure 1 300 mm. Quelle est sa largeur ?",
+  h:{l:"a",nom:"largeur",val:500}, v:{l:"b",nom:"hauteur",val:1200}, hyp:{l:"c",nom:"diagonale",val:1300},
+  phrase:"Le châssis mesure {R} de largeur." },
+{ cas:2, fig:"tri", unite:"m", cherche:"a", sol:true,
+  texte:"Un plan incliné de manutention mesure 6,10 m de long. Son emprise au sol est de 6,00 m. Quelle hauteur permet-il de rattraper ?",
+  h:{l:"b",nom:"emprise au sol",val:6.00}, v:{l:"a",nom:"hauteur",val:1.10}, hyp:{l:"c",nom:"plan incliné",val:6.10},
+  phrase:"Le plan incliné rattrape une hauteur de {R}." },
+
+/* ---- Partie 3 : vérifier l’équerrage ---- */
+{ cas:3, fig:"rect", unite:"mm", cherche:"verif",
+  texte:"Un caisson doit mesurer 600 mm sur 800 mm. Une fois assemblé, on mesure sa diagonale : elle fait 1 000 mm. Le caisson est-il d’équerre ?",
+  h:{l:"a",nom:"largeur",val:600}, v:{l:"b",nom:"hauteur",val:800}, hyp:{l:"c",nom:"mesurée",val:1000},
+  phrase:"Le caisson est bien d’équerre." },
+{ cas:3, fig:"rect", unite:"mm", cherche:"verif",
+  texte:"Un plateau mesure 900 mm sur 1 200 mm. On mesure sa diagonale : 1 520 mm. Le plateau est-il d’équerre ?",
+  h:{l:"a",nom:"largeur",val:900}, v:{l:"b",nom:"longueur",val:1200}, hyp:{l:"c",nom:"mesurée",val:1520},
+  phrase:"Le plateau n’est pas d’équerre." },
+{ cas:3, fig:"tri", unite:"m", cherche:"verif", sol:true,
+  texte:"Pour implanter une cloison perpendiculaire à un mur, on reporte 3,00 m le long du mur et 4,00 m le long de la cloison, puis on mesure la distance entre les deux repères : 5,00 m. L’implantation est-elle d’équerre ?",
+  h:{l:"a",nom:"sur le mur",val:3.00}, v:{l:"b",nom:"sur la cloison",val:4.00}, hyp:{l:"c",nom:"entre repères",val:5.00},
+  phrase:"L’implantation est bien d’équerre." },
+{ cas:3, fig:"rect", unite:"m", cherche:"verif",
+  texte:"Une terrasse rectangulaire est tracée au sol : 6,00 m sur 4,50 m. La diagonale mesurée sur le tracé vaut 7,40 m. Le tracé est-il d’équerre ?",
+  h:{l:"a",nom:"longueur",val:6.00}, v:{l:"b",nom:"largeur",val:4.50}, hyp:{l:"c",nom:"mesurée",val:7.40},
+  phrase:"Le tracé n’est pas d’équerre." }
+];
+
+/* ---- accès aux côtés par lettre ---- */
+function byL(s,l){ return s.h.l===l?s.h : s.v.l===l?s.v : s.hyp; }
+function cotes(s){ return { a:byL(s,"a"), b:byL(s,"b"), c:s.hyp }; }
+function carreCherche(s){
+  const k=cotes(s);
+  return s.cas===1 ? k.a.val*k.a.val + k.b.val*k.b.val : k.c.val*k.c.val - k.b.val*k.b.val;
+}
+function resultat(s){ return Math.sqrt(carreCherche(s)); }
+function membres(s){ const k=cotes(s); return { g:k.a.val*k.a.val+k.b.val*k.b.val, d:k.c.val*k.c.val }; }
+function estDroit(s){ const m=membres(s); return Math.abs(m.g-m.d) < 1e-6*Math.max(1,m.d); }
+function bonneDiag(s){ const k=cotes(s); return Math.sqrt(k.a.val*k.a.val+k.b.val*k.b.val); }
+function tolL(s){ return s.unite==="mm" ? 0.6 : 0.006; }
+function tolC(s){ return s.unite==="mm" ? 0.6 : 0.0006; }
+const close=(v,x,t)=>Math.abs(v-x)<=t;
+
+/* ============ figure animée ============ */
+function figure(s,opt){
+  opt=opt||{};
+  const k=cotes(s);
+  const w=s.h.val, h=s.v.val;
+  const sc=Math.min(220/w,150/h);
+  const W=w*sc, H=h*sc;
+  const x0=120, yB=205, yT=yB-H, xR=x0+W;
+  const chH=(opt.montre && s.h.l===opt.montre), chV=(opt.montre && s.v.l===opt.montre), chD=(opt.montre==="c");
+  const st=(on)=>on ? (opt.trouve ? "side trouve" : "side cherche") : "side";
+  const lab=(cote,chercheCe)=>{
+    if(cote===s.hyp && s.cherche==="verif") return fmtLU(cote.val,s);
+    const inconnu = (s.cherche!=="verif") && (cote.l===s.cherche || (s.cherche==="a"&&cote.l==="a") || (s.cherche==="c"&&cote===s.hyp));
+    if(inconnu && !opt.trouve) return "?";
+    if(inconnu && opt.trouve) return fmtLU(resultat(s),s);
+    return fmtLU(cote.val,s);
+  };
+  const L=(p1,p2)=>Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+  const A=[x0,yB], B=[xR,yB], C=[x0,yT], D=[xR,yT];
+  const mx=(B[0]+C[0])/2, my=(B[1]+C[1])/2;
+  const angCls = opt.verdict==="ok" ? "ang ok" : opt.verdict==="ko" ? "ang ko" : "ang";
+  const marque = s.cherche==="verif" && !opt.verdict ? `<text x="${x0+26}" y="${yB-14}" class="nom">?</text>` : "";
+  let out=`<svg viewBox="0 0 440 272" role="img" aria-label="Figure de la situation">`;
+  if(s.fig==="rect"){
+    out+=`<path class="tr" d="M${x0},${yB} L${xR},${yB} L${xR},${yT} L${x0},${yT} Z" fill="#fff"/>`;
+    out+=`<path class="aux" d="M${x0},${yT} L${xR},${yT} L${xR},${yB}"/>`;
+  }
+  if(s.sol) out+=`<line class="sol" x1="${x0-34}" y1="${yB+8}" x2="${xR+26}" y2="${yB+8}"/>`;
+  if(s.mur) out+=`<line class="sol" x1="${x0-8}" y1="${yT-16}" x2="${x0-8}" y2="${yB+8}"/>`;
+  const seg=(p1,p2,cls,d)=>{ const len=L(p1,p2).toFixed(1);
+    return `<line class="${cls} trace ${d}" style="--len:${len}" x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}"/>`; };
+  out+=seg(A,B,st(chH),"");
+  out+=seg(A,C,st(chV),"d1");
+  out+=seg(C,B,st(chD),"d2");
+  out+=`<path class="${angCls} app d1" d="M${x0},${yB-16} L${x0+16},${yB-16} L${x0+16},${yB}"/>${marque}`;
+  const txt=(x,y,anchor,cote,delay)=>`
+    <text class="app ${delay}" x="${x}" y="${y}" text-anchor="${anchor}"><tspan class="lett">${cote.l}</tspan> = ${lab(cote)}</text>
+    <text class="nom app ${delay}" x="${x}" y="${y+16}" text-anchor="${anchor}">${cote.nom}</text>`;
+  out+=txt((x0+xR)/2, yB+34, "middle", s.h, "d2");
+  out+=txt(x0-14, (yB+yT)/2-4, "end", s.v, "d3");
+  out+=txt(mx+16, my-10, "start", s.hyp, "d4");
+  out+=`</svg>`;
+  return `<div class="fig">${out}</div>`;
+}
+
+/* figure animée de la démonstration (carrés) pour l’écran de présentation */
+function figCarres(){
+  const sc=20, x0=150, yB=190, W=3*sc, H=4*sc, yT=yB-H, xR=x0+W;
+  // carré sur l’hypoténuse : C, B, B+(H,−W), C+(H,−W)
+  const C=[x0,yT], B=[xR,yB], n=[H,-W];
+  const P3=[B[0]+n[0],B[1]+n[1]], P4=[C[0]+n[0],C[1]+n[1]];
+  const cx=(C[0]+B[0]+P3[0]+P4[0])/4, cy=(C[1]+B[1]+P3[1]+P4[1])/4;
+  return `<div class="fig"><svg viewBox="0 0 380 300" role="img" aria-label="Les carrés construits sur les trois côtés du triangle rectangle">
+    <rect class="carre d1" x="${x0}" y="${yB}" width="${W}" height="${W}" fill="#EBF1FE" stroke="#C6D4FD"/>
+    <text class="app d1" x="${x0+W/2}" y="${yB+W/2+6}" text-anchor="middle">9</text>
+    <rect class="carre d2" x="${x0-H}" y="${yT}" width="${H}" height="${H}" fill="#EBF1FE" stroke="#C6D4FD"/>
+    <text class="app d2" x="${x0-H/2}" y="${yT+H/2+6}" text-anchor="middle">16</text>
+    <path class="carre d3" d="M${C[0]},${C[1]} L${B[0]},${B[1]} L${P3[0]},${P3[1]} L${P4[0]},${P4[1]} Z" fill="#E9F7EF" stroke="#A9DCBF"/>
+    <text class="app d3" x="${cx}" y="${cy+6}" text-anchor="middle">25</text>
+    <line class="side" x1="${x0}" y1="${yB}" x2="${xR}" y2="${yB}"/>
+    <line class="side" x1="${x0}" y1="${yB}" x2="${x0}" y2="${yT}"/>
+    <line class="side" x1="${x0}" y1="${yT}" x2="${xR}" y2="${yB}"/>
+    <path class="ang" d="M${x0},${yB-14} L${x0+14},${yB-14} L${x0+14},${yB}"/>
+    <text class="app d4" x="190" y="288" text-anchor="middle">9 + 16 = 25</text>
+  </svg></div>`;
+}
+
+/* ============ les trois parties ============ */
+const PARTS_P=[
+ { cas:1, court:"Chercher l’hypoténuse", titre:"Chercher l’hypoténuse",
+   cherche:"Le côté le plus long du triangle rectangle : la diagonale, le rampant, l’échelle… celui qui fait face à l’angle droit.",
+   expl:"Les deux côtés de l’angle droit sont connus. On additionne leurs carrés : on obtient le carré de l’hypoténuse. Il reste à prendre la racine carrée.",
+   ex:"Un triangle rectangle a deux côtés de l’angle droit de 3 m et 4 m.",
+   exLignes:[`${sq(V("c"))}<span class="op">=</span>${sq("3")}<span class="op">+</span>${sq("4")}`,
+             `${sq(V("c"))}<span class="op">=</span>9<span class="op">+</span>16<span class="op">=</span>25`,
+             `${V("c")}<span class="op">=</span>${racine("25")}<span class="op">=</span>5`],
+   exPhrase:"L’hypoténuse mesure 5 m.",
+   fig:figCarres,
+   reperes:"Dans l’énoncé, ce sont les deux côtés de l’angle droit qui sont donnés." },
+ { cas:2, court:"Chercher un côté de l’angle droit", titre:"Chercher un côté de l’angle droit",
+   cherche:"Un côté de l’angle droit, quand l’hypoténuse est déjà connue.",
+   expl:"Cette fois, on soustrait. On part du carré de l’hypoténuse et on retire le carré du côté connu. Le plus grand carré vient toujours en premier.",
+   ex:"Un triangle rectangle a une hypoténuse de 13 mm et un côté de l’angle droit de 12 mm.",
+   exLignes:[`${sq(V("a"))}<span class="op">=</span>${sq("13")}<span class="op">−</span>${sq("12")}`,
+             `${sq(V("a"))}<span class="op">=</span>169<span class="op">−</span>144<span class="op">=</span>25`,
+             `${V("a")}<span class="op">=</span>${racine("25")}<span class="op">=</span>5`],
+   exPhrase:"Le côté cherché mesure 5 mm.",
+   attention:"Attention : ici on soustrait, on n’additionne pas. Si tu additionnes, tu obtiens un résultat plus grand que l’hypoténuse, ce qui est impossible.",
+   reperes:"Repère l’hypoténuse : c’est toujours la plus grande des mesures données." },
+ { cas:3, court:"Vérifier l’équerrage", titre:"Vérifier si l’angle est droit",
+   cherche:"Aucune longueur ne manque : les trois mesures sont données. On veut savoir si l’angle est droit.",
+   expl:"On calcule séparément les deux membres : la somme des carrés des deux petits côtés d’un côté, le carré du plus grand de l’autre. S’ils sont égaux, l’angle est droit. Sinon, il ne l’est pas.",
+   ex:"Un tracé au sol mesure 3,00 m et 4,00 m, et la mesure entre les deux repères vaut 5,00 m.",
+   exLignes:[`${sq("3")}<span class="op">+</span>${sq("4")}<span class="op">=</span>9<span class="op">+</span>16<span class="op">=</span>25`,
+             `${sq("5")}<span class="op">=</span>25`,
+             `25<span class="op">=</span>25`],
+   exPhrase:"Les deux membres sont égaux : l’angle est droit.",
+   reperes:"C’est la méthode du 3-4-5 utilisée sur le chantier pour implanter un angle droit." }
+];
+
+
+
+/* =========================================================
+   MODULE 2 — CONVERSIONS ET ÉCHELLES DE PLAN
+   Le tableau de conversion est l’outil central : l’élève y place
+   les chiffres, complète les zéros, puis lit le résultat.
+   cas 1 : longueurs   cas 2 : surfaces
+   cas 3 : du plan vers le réel   cas 4 : du réel vers le plan
+   ========================================================= */
+const UNITS_L=["km","hm","dam","m","dm","cm","mm"];
+const UNITS_A=["km²","hm²","dam²","m²","dm²","cm²","mm²"];
+const spec_=aire=>({units:aire?UNITS_A:UNITS_L, per:aire?2:1});
+const cellOf=(sp,u)=>sp.per*(sp.units.indexOf(u)+1)-1;
+
+function digitsOf(x){
+  let t=Math.abs(x).toFixed(6);
+  if(t.indexOf(".")>=0) t=t.replace(/0+$/,"").replace(/\.$/,"");
+  const p=t.split("."), ent=p[0].replace(/^0+(?=\d)/,""), dec=p[1]||"";
+  return {ent:ent, dec:dec};
+}
+/* tableau attendu : on place le nombre de départ, puis on complète
+   avec des zéros jusqu’à la colonne de l’unité demandée */
+function tableau(val,de,vers,aire){
+  const sp=spec_(aire), N=sp.units.length*sp.per;
+  const cells=Array(N).fill("");
+  const jd=cellOf(sp,de), jv=cellOf(sp,vers);
+  const d=digitsOf(val);
+  for(let k=0;k<d.ent.length;k++){ const j=jd-(d.ent.length-1-k); if(j>=0&&j<N) cells[j]=d.ent[k]; }
+  for(let k=0;k<d.dec.length;k++){ const j=jd+1+k; if(j<N) cells[j]=d.dec[k]; }
+  for(let j=jd+d.dec.length+1;j<=jv;j++) cells[j]="0";
+  return {cells:cells, jd:jd, jv:jv, sp:sp, de:de, vers:vers};
+}
+/* rendu du tableau — mode : "clic", "saisie" ou "fige" */
+function tableHTML(T,mode,valeurs){
+  const sp=T.sp, N=sp.units.length*sp.per;
+  const th=sp.units.map((u,i)=>{
+    const cl=[u===T.de?"cde":"", u===T.vers?"cvers":""].join(" ").trim();
+    return `<th colspan="${sp.per}" class="${cl}">${u}</th>`;
+  }).join("");
+  let td="";
+  for(let j=0;j<N;j++){
+    const bord = (j%sp.per===0 && j>0) ? " sep" : "";
+    const virg = j===T.jv ? " virg" : "";
+    let dedans;
+    if(mode==="clic") dedans=`<button type="button" class="cellbtn" data-j="${j}" aria-label="case ${j+1}"></button>`;
+    else if(mode==="saisie") dedans=`<input class="cellin" id="tc-${j}" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="case ${j+1}">`;
+    else dedans=`<span class="cellv">${(valeurs||T.cells)[j]||""}</span>`;
+    td+=`<td class="c${bord}${virg}" data-j="${j}">${dedans}</td>`;
+  }
+  return `<div class="tconv-wrap"><table class="tconv"><thead><tr>${th}</tr></thead><tbody><tr>${td}</tr></tbody></table>
+    <p class="tconv-note">La virgule se place après la colonne des ${T.vers}.</p></div>`;
+}
+function tableFige(val,de,vers,aire){ const T=tableau(val,de,vers,aire); return tableHTML(T,"fige"); }
+
+/* ---- schéma plan / réel ---- */
+function figEchelle(s){
+  const versPlan = s.cas===4;
+  const yA=52, yB=118, x0=100, wLong=250, wCourt=90;
+  const src = versPlan ? {w:wLong, cls:"barr", txt:`en vrai : ${nb(s.reelCm)} cm`, dedans:true}
+                       : {w:wCourt, cls:"barp", txt:`sur le plan : ${nb(s.plan)} cm`, dedans:false};
+  const dst = versPlan ? {w:wCourt, cls:"barp", txt:`sur le plan : ${nb(s.res)} cm`, dedans:false}
+                       : {w:wLong, cls:"barr", txt:`en vrai : ${nb(s.reelCm)} cm`, dedans:true};
+  const bar=(b,y,delai)=>`<g class="app ${delai}"><rect class="${b.cls}" x="${x0}" y="${y-14}" width="${b.w}" height="28" rx="5"/>
+    <text class="petit ${b.dedans?"surbar":""}" x="${b.dedans?x0+12:x0+b.w+12}" y="${y+5}">${b.txt}</text></g>`;
+  const op = versPlan ? `÷ ${nb(s.ech)}` : `× ${nb(s.ech)}`;
+  return `<div class="fig"><svg viewBox="0 0 400 170" role="img" aria-label="Du plan au réel">
+    ${bar(src,yA,"")}
+    <path class="fleche" d="M60,${yA+18} L60,${yB-22}"/>
+    <path class="pointe" d="M60,${yB-14} l-5,-9 l10,0 z"/>
+    <text class="grand app d2" x="72" y="${(yA+yB)/2+7}">${op}</text>
+    ${bar(dst,yB,"d3")}
+    <text class="nom" x="200" y="158" text-anchor="middle">${versPlan?"la longueur dessinée est plus petite que la réalité":"la longueur réelle est plus grande que celle du plan"}</text>
+  </svg></div>`;
+}
+
+/* =========== les 16 situations =========== */
+const SITS_C=[
+/* -- Partie 1 : longueurs -- */
+{ cas:1, lib:"Fiche de débit", val:2.40, de:"m", vers:"cm", res:240 },
+{ cas:1, lib:"Cote de plan d’atelier", val:85, de:"cm", vers:"mm", res:850 },
+{ cas:1, lib:"Bon de commande", val:1830, de:"mm", vers:"m", res:1.83 },
+{ cas:1, lib:"Réglage de la scie à format", val:3.6, de:"m", vers:"mm", res:3600 },
+/* -- Partie 2 : surfaces -- */
+{ cas:2, lib:"Section d’une pièce", val:6, de:"cm²", vers:"mm²", res:600 },
+{ cas:2, lib:"Commande de stratifié", val:1.8, de:"m²", vers:"cm²", res:18000 },
+{ cas:2, lib:"Découpe de quincaillerie", val:2500, de:"mm²", vers:"cm²", res:25 },
+{ cas:2, lib:"Fiche de stock", val:4500, de:"cm²", vers:"m²", res:0.45 },
+/* -- Partie 3 : du plan vers le réel -- */
+{ cas:3, lib:"Plan d’agencement", ech:50, plan:7.4, reelCm:370, res:3.70, ouvrage:"cloison" },
+{ cas:3, lib:"Plan de menuiserie", ech:20, plan:10.5, reelCm:210, res:2.10, ouvrage:"porte" },
+{ cas:3, lib:"Plan de masse", ech:100, plan:4.2, reelCm:420, res:4.20, ouvrage:"pièce" },
+{ cas:3, lib:"Plan de meuble", ech:25, plan:3.2, reelCm:80, res:0.80, ouvrage:"caisson" },
+/* -- Partie 4 : du réel vers le plan -- */
+{ cas:4, lib:"Plan d’agencement", ech:50, reel:6.00, reelCm:600, res:12, ouvrage:"cloison" },
+{ cas:4, lib:"Plan de meuble", ech:20, reel:1.80, reelCm:180, res:9, ouvrage:"meuble" },
+{ cas:4, lib:"Plan de masse", ech:100, reel:7.50, reelCm:750, res:7.5, ouvrage:"pièce" },
+{ cas:4, lib:"Plan d’escalier", ech:25, reel:4.40, reelCm:440, res:17.6, ouvrage:"volée d’escalier" }
+];
+
+/* =========== les quatre parties =========== */
+const PARTS_C=[
+ { court:"Longueurs", titre:"Convertir une longueur",
+   regleK:"La règle", regle:`une colonne par unité<span class="op">·</span>un chiffre par colonne`,
+   cherche:"Écrire la même longueur dans une autre unité.",
+   expl:"On place le chiffre des unités dans la colonne de son unité, puis les chiffres suivants dans les colonnes de droite. On complète avec des zéros jusqu’à la colonne demandée, et on lit.",
+   ex:"2,5 m en centimètres : le 2 dans la colonne des m, le 5 dans les dm, un zéro dans les cm.",
+   exLignes:[],
+   exPhrase:"2,5 m = 250 cm.",
+   fig:()=>tableFige(2.5,"m","cm",false),
+   reperes:"Vers une unité plus petite, le nombre obtenu est plus grand." },
+ { court:"Surfaces", titre:"Convertir une surface",
+   regleK:"La règle", regle:`<b>deux</b> colonnes par unité<span class="op">·</span>deux chiffres par unité`,
+   cherche:"Écrire la même surface dans une autre unité.",
+   expl:"Le tableau est le même, mais chaque unité occupe deux cases, parce qu’une surface se mesure dans deux directions. C’est ce qui fait 100 par échelon, et non 10.",
+   ex:"1,4 m² en centimètres carrés : le 1 dans la case de droite des m², le 4 juste après, puis des zéros jusqu’au bout des cm².",
+   exLignes:[],
+   exPhrase:"1,4 m² = 14 000 cm².",
+   attention:"Attention : sauter une case revient à se tromper d’un facteur 10. Chaque unité en occupe deux, toujours.",
+   fig:()=>tableFige(1.4,"m²","cm²",true),
+   reperes:"1 m² = 10 000 cm², 1 cm² = 100 mm²." },
+ { court:"Du plan au réel", titre:"Lire une longueur sur un plan",
+   regleK:"La règle", regle:`longueur réelle<span class="op">=</span>mesure sur le plan<span class="op">×</span>échelle`,
+   cherche:"La dimension réelle, à partir de la mesure prise sur le plan.",
+   expl:"À l’échelle 1:50, un centimètre du plan vaut 50 cm en vrai. On multiplie par l’échelle, on obtient des centimètres, puis on convertit avec le tableau.",
+   ex:"Échelle 1:50, mesure sur le plan : 6 cm.",
+   exLignes:[`6<span class="op">×</span>50<span class="op">=</span>300 cm`,`300 cm<span class="op">=</span>3 m`],
+   exPhrase:"La longueur réelle est de 3 m.",
+   fig:()=>figEchelle({cas:3,ech:50,plan:6,reelCm:300,res:3}),
+   reperes:"Le réel est toujours plus grand que le plan." },
+ { court:"Du réel au plan", titre:"Dessiner une longueur sur un plan",
+   regleK:"La règle", regle:`mesure à dessiner<span class="op">=</span>longueur réelle<span class="op">÷</span>échelle`,
+   cherche:"La longueur à tracer sur le plan, à partir de la dimension réelle.",
+   expl:"Chemin inverse : on convertit d’abord la dimension réelle en centimètres avec le tableau, puis on divise par l’échelle.",
+   ex:"Cloison de 4,50 m, échelle 1:50.",
+   exLignes:[`4,50 m<span class="op">=</span>450 cm`,`450<span class="op">÷</span>50<span class="op">=</span>9 cm`],
+   exPhrase:"On trace un trait de 9 cm.",
+   contraste:"Du plan vers le réel, on multiplie. Du réel vers le plan, on divise.",
+   fig:()=>figEchelle({cas:4,ech:50,reel:4.5,reelCm:450,res:9}),
+   reperes:"La mesure dessinée est toujours plus petite que la dimension réelle." }
+];
+
+/* =========== rendu d’une situation =========== */
+function renderSitConv(i){
+  const s=MOD.sits[i], r=state.results[i];
+  const aire = s.cas===2;
+  /* le tableau utilisé dans la situation */
+  const T = s.cas<=2 ? tableau(s.val,s.de,s.vers,aire)
+          : s.cas===3 ? tableau(s.reelCm,"cm","m",false)
+          : tableau(s.reel,"m","cm",false);
+  const suite = s.cas<=2 ? ["colonne","tableau","lecture"]
+              : s.cas===3 ? ["sens","calcul","tableau","lecture"]
+              : ["sens","tableau","lecture","calcul"];
+  let pos=0;
+  header({type:"sit",idx:i});
+
+  /* ---- l’énoncé, présenté comme une fiche ---- */
+  let fiche;
+  if(s.cas<=2){
+    fiche=`<div class="fiche"><div class="fiche-k">${s.lib}</div>
+      <div class="fiche-l"><span class="nbr">${nb(s.val)} ${s.de}</span><span class="fl">=</span><span class="cible">? ${s.vers}</span></div></div>`;
+  } else {
+    const l3 = s.cas===3
+      ? `<div><dt>Sur le plan</dt><dd>${nb(s.plan)} cm</dd></div><div><dt>Longueur réelle</dt><dd class="cible">? m</dd></div>`
+      : `<div><dt>Longueur réelle</dt><dd>${nb(s.reel,2)} m</dd></div><div><dt>À dessiner sur le plan</dt><dd class="cible">? cm</dd></div>`;
+    fiche=`<div class="fiche"><div class="fiche-k">${s.lib} — ${s.ouvrage}</div>
+      <dl class="don"><div><dt>Échelle</dt><dd>1:${nb(s.ech)}</dd></div>${l3}</dl></div>`;
+  }
+  app.innerHTML=`
+  <article class="card reveal">
+    <p class="kicker">Situation ${i+1}</p>
+    ${fiche}
+    <section class="step" id="sA"></section>
+    <section class="step" id="sB" hidden></section>
+    <section class="step" id="sC" hidden></section>
+    <section class="step" id="sD" hidden></section>
+    <div id="corr"></div>
+  </article>`;
+  const box=["#sA","#sB","#sC","#sD"].map(x=>$(x));
+  const corr=$("#corr");
+  function markDone(el,titre,html){ el.classList.add("is-done");
+    el.innerHTML=`<div class="done reveal"><span class="chk" aria-hidden="true">✓</span><div class="done-b"><div class="done-k">${titre}</div><div>${html}</div></div></div>`; }
+  function open(el){ el.hidden=false; el.classList.add("reveal"); setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"nearest"}),60); }
+  function say(el,html){ el.querySelector(".fb").innerHTML=html; }
+  function next(){ pos++; if(pos<suite.length) ETAPES[suite[pos]](box[pos]); else fin(false); }
+  const num=()=>`<span class="sn">Étape ${pos+1}</span>`;
+
+  const ETAPES={
+    /* --- où se place le chiffre des unités --- */
+    colonne(el){
+      el.innerHTML=`<h3>${num()}Dans quelle case se place le chiffre des unités de ${nb(s.val)} ${s.de} ?</h3>
+        <p class="hint">${typo(aire?"Chaque unité occupe deux cases : clique sur la bonne.":"Clique sur la case, sous l’unité qui convient.")}</p>
+        ${tableHTML(T,"clic")}
+        <div class="fb" aria-live="polite"></div>`;
+      open(el);
+      el.querySelectorAll(".cellbtn").forEach(b=>b.addEventListener("click",()=>{
+        const j=+b.dataset.j, td=b.parentNode;
+        if(j===T.jd){ td.classList.add("ok"); markDone(el,"Étape 1 · La case de départ",`Le chiffre des unités de ${nb(s.val)} ${s.de} se place dans la ${aire?"case de droite de la colonne":"colonne"} des ${s.de}.`); next(); return; }
+        td.classList.add("bad"); b.disabled=true; r.e1++; save();
+        const mm = aire && Math.abs(j-T.jd)===1 ? "Bonne unité, mauvaise case : pour une surface, le chiffre des unités va dans la case de DROITE de la colonne."
+          : `Le nombre de départ est en ${s.de} : son chiffre des unités se place dans la colonne des ${s.de}, pas ailleurs.`;
+        say(el,`<div class="msg err">${typo(mm)}</div>`);
+      }));
+    },
+    /* --- sens du calcul (échelles) --- */
+    sens(el){
+      const bon = s.cas===3 ? "mult" : "div";
+      const OPT={mult:"Du plan vers le réel : on multiplie par l’échelle", div:"Du réel vers le plan : on divise par l’échelle"};
+      el.innerHTML=`<h3>${num()}Que fait-on de l’échelle ?</h3>
+        <div class="options">${shuffle(["mult","div"]).map(k=>`<button type="button" class="opt" data-k="${k}">${typo(OPT[k])}</button>`).join("")}</div>
+        <div class="fb" aria-live="polite"></div>`;
+      open(el);
+      el.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+        if(b.dataset.k===bon){ markDone(el,"Étape 1 · Le sens",typo(OPT[bon])); next(); return; }
+        b.classList.add("wrong"); b.disabled=true; r.e1++; save();
+        say(el,`<div class="msg err">${typo(s.cas===3?"La mesure du plan est plus petite que la réalité : le nombre doit augmenter.":"La mesure dessinée est plus petite que la réalité : le nombre doit diminuer.")}</div>`);
+      }));
+    },
+    /* --- remplir le tableau --- */
+    tableau(el){
+      const dep = s.cas<=2 ? `${nb(s.val)} ${s.de}` : (s.cas===3 ? `${nb(s.reelCm)} cm` : `${nb(s.reel,2)} m`);
+      let essais=0;
+      el.innerHTML=`<h3>${num()}Place ${dep} dans le tableau, puis complète avec des zéros jusqu’aux ${T.vers}</h3>
+        <p class="hint">Une case par chiffre. Les cases inutiles restent vides.</p>
+        ${tableHTML(T,"saisie")}
+        <div class="actions"><button type="button" class="btn" id="okT">Valider le tableau</button><span id="revT"></span></div>
+        <div class="fb" aria-live="polite"></div>`;
+      open(el);
+      const ins=T.cells.map((_,j)=>$("#tc-"+j));
+      setTimeout(()=>ins[Math.max(0,T.jd-3)].focus({preventScroll:true}),260);
+      ins.forEach((inp,j)=>{
+        inp.addEventListener("input",()=>{
+          inp.value=inp.value.replace(/[^0-9]/g,"").slice(0,1);
+          inp.parentNode.classList.remove("bad","ok");
+          if(inp.value && ins[j+1]) ins[j+1].focus();
+        });
+        inp.addEventListener("keydown",e=>{
+          if(e.key==="Enter"){ e.preventDefault(); check(); }
+          if(e.key==="Backspace" && !inp.value && ins[j-1]) ins[j-1].focus();
+          if(e.key==="ArrowRight" && ins[j+1]) ins[j+1].focus();
+          if(e.key==="ArrowLeft" && ins[j-1]) ins[j-1].focus();
+        });
+      });
+      $("#okT").addEventListener("click",check);
+
+      function check(){
+        const vals=ins.map(x=>x.value.trim());
+        const ok=vals.map((v,j)=>v===T.cells[j]);
+        ins.forEach((inp,j)=>{ inp.parentNode.classList.toggle("ok",ok[j]&&T.cells[j]!==""); inp.parentNode.classList.toggle("bad",!ok[j]); });
+        if(ok.every(Boolean)){ fini(false); return; }
+        r.e2++; essais++; save();
+        let m;
+        const posees=vals.map((v,j)=>v!==""?j:-1).filter(j=>j>=0);
+        const manqueZeros = posees.length && posees.every(j=>vals[j]===T.cells[j]) && Math.max.apply(null,posees)<T.jv;
+        const uniteMalPlacee = vals[T.jd]!==T.cells[T.jd];
+        if(!posees.length) m="Commence par écrire les chiffres du nombre, en partant de sa colonne d’unité.";
+        else if(manqueZeros) m=`Il manque des zéros : complète les cases vides jusqu’à la fin de la colonne des ${T.vers}.`;
+        else if(uniteMalPlacee) m=`Décale le nombre : son chiffre des unités doit rester dans la colonne des ${s.cas<=2?s.de:(s.cas===3?"cm":"m")}.`;
+        else m="Une case au moins ne va pas. Les cases en rouge sont à corriger, une case ne reçoit qu’un chiffre.";
+        say(el,`<div class="msg err">${typo(m)}</div>`);
+        if(essais>=3 && !$("#revTb")){
+          $("#revT").innerHTML=`<button type="button" class="btn quiet" id="revTb">Afficher le tableau</button>`;
+          $("#revTb").addEventListener("click",()=>{ r.aide=true; save(); fini(true); });
+        }
+      }
+      function fini(aide){
+        markDone(el,`Étape ${pos+1} · Le tableau`,tableHTML(T,"fige")+(aide?`<div class="done-note">Tableau affiché après plusieurs essais.</div>`:""));
+        next();
+      }
+    },
+    /* --- lire le résultat --- */
+    lecture(el){
+      const unite = s.cas<=2 ? s.vers : (s.cas===3 ? "m" : "cm");
+      const att = s.cas<=2 ? s.res : (s.cas===3 ? s.res : s.reelCm);
+      const dep = s.cas<=2 ? `${nb(s.val)} ${s.de}` : (s.cas===3 ? `${nb(s.reelCm)} cm` : `${nb(s.reel,2)} m`);
+      let essais=0;
+      el.innerHTML=`<h3>${num()}Lis le résultat dans le tableau</h3>
+        <p class="hint">${typo("Relis le tableau ci-dessus : la virgule se place juste après la colonne des "+unite+".")}</p>
+        <div class="answer"><span class="fbox">${dep}<span class="op">=</span></span><input id="in-l" class="slot lg" type="text" inputmode="decimal" autocomplete="off" aria-label="Résultat lu"><span class="unit">${unite}</span></div>
+        <div class="actions"><button type="button" class="btn" id="okL">Valider</button><span id="revL"></span></div>
+        <div class="fb" aria-live="polite"></div>`;
+      open(el);
+      const inp=$("#in-l");
+      setTimeout(()=>inp.focus({preventScroll:true}),260);
+      inp.addEventListener("input",()=>inp.classList.remove("bad"));
+      inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); } });
+      $("#okL").addEventListener("click",check);
+      function check(){
+        const v=parseNum(inp.value);
+        if(!inp.value.trim()){ say(el,`<div class="msg err">Saisis le résultat.</div>`); return; }
+        if(isNaN(v)){ say(el,`<div class="msg err">${typo("Écris uniquement un nombre.")}</div>`); return; }
+        if(close(v,att,Math.max(1e-9,Math.abs(att)*1e-9))){
+          inp.classList.add("good"); inp.disabled=true; $("#okL").parentNode.remove(); say(el,"");
+          markDone(el,`Étape ${pos+1} · Lecture`,`${dep} = <strong>${nb(att)} ${unite}</strong>`);
+          next(); return;
+        }
+        r.e4++; essais++; save(); inp.classList.add("bad");
+        const depNum = s.cas<=2 ? s.val : (s.cas===3 ? s.reelCm : s.reel);
+        let m;
+        if(close(v,depNum,1e-9)) m="C’est le nombre de départ recopié. Lis le tableau en plaçant la virgule après la colonne des "+unite+".";
+        else if(close(v,att*10,Math.abs(att)*1e-6)||close(v,att/10,Math.abs(att)*1e-6)) m="Il y a une case d’écart. Recompte les cases jusqu’à la virgule.";
+        else if(att<1 && v>=1) m="Le résultat est plus petit que 1 : il s’écrit 0 puis la virgule, puis les chiffres du tableau.";
+        else m="Relis le tableau case par case, de la première case remplie jusqu’à la colonne des "+unite+".";
+        let html=`<div class="msg err">${typo(m)}</div>`;
+        if(essais>=2) html+=`<div class="msg help">${typo("Le résultat doit-il être plus grand ou plus petit que "+nb(depNum)+" ? Vérifie avant de valider.")}</div>`;
+        say(el,html);
+        if(essais>=3 && !$("#revLb")){
+          $("#revL").innerHTML=`<button type="button" class="btn quiet" id="revLb">Voir la correction</button>`;
+          $("#revLb").addEventListener("click",()=>{ inp.disabled=true; $("#okL").parentNode.remove(); say(el,""); r.rev=true; fin(true); });
+        }
+      }
+    },
+    /* --- le calcul avec l’échelle --- */
+    calcul(el){
+      const mult = s.cas===3;
+      const g = mult ? `${nb(s.plan)}<span class="op">×</span>${nb(s.ech)}` : `${nb(s.reelCm)}<span class="op">÷</span>${nb(s.ech)}`;
+      const att = mult ? s.reelCm : s.res;
+      let essais=0;
+      el.innerHTML=`<h3>${num()}${mult?"Multiplie la mesure du plan par l’échelle":"Divise la mesure réelle par l’échelle"}</h3>
+        <div class="answer"><span class="fbox big">${g}<span class="op">=</span></span><input id="in-c" class="slot lg" type="text" inputmode="decimal" autocomplete="off" aria-label="Résultat du calcul"><span class="unit">cm</span></div>
+        <div class="actions"><button type="button" class="btn" id="okC">Valider</button><span id="revC"></span></div>
+        <div class="fb" aria-live="polite"></div>`;
+      open(el);
+      const inp=$("#in-c");
+      setTimeout(()=>inp.focus({preventScroll:true}),260);
+      inp.addEventListener("input",()=>inp.classList.remove("bad"));
+      inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); } });
+      $("#okC").addEventListener("click",check);
+      function check(){
+        const v=parseNum(inp.value);
+        if(!inp.value.trim()){ say(el,`<div class="msg err">Saisis le résultat.</div>`); return; }
+        if(isNaN(v)){ say(el,`<div class="msg err">${typo("Écris uniquement un nombre.")}</div>`); return; }
+        if(close(v,att,Math.max(1e-9,Math.abs(att)*1e-6))){
+          inp.classList.add("good"); inp.disabled=true; $("#okC").parentNode.remove(); say(el,"");
+          markDone(el,`Étape ${pos+1} · Le calcul`,`<span class="fbox">${g}<span class="op">=</span><strong>${nb(att)} cm</strong></span>`);
+          next(); return;
+        }
+        r.e3++; essais++; save(); inp.classList.add("bad");
+        let m;
+        if(mult && close(v,s.plan/s.ech,1e-6)) m="Tu as divisé : du plan vers le réel, on multiplie.";
+        else if(!mult && close(v,s.reelCm*s.ech,1e-6)) m="Tu as multiplié : du réel vers le plan, on divise.";
+        else m="Refais l’opération à la calculatrice.";
+        let html=`<div class="msg err">${typo(m)}</div>`;
+        if(essais>=2) html+=`<div class="msg help">${typo("Ordre de grandeur attendu : "+(mult?"plus grand que "+nb(s.plan):"plus petit que "+nb(s.reelCm))+".")}</div>`;
+        say(el,html);
+        if(essais>=3 && !$("#revCb")){
+          $("#revC").innerHTML=`<button type="button" class="btn quiet" id="revCb">Voir la correction</button>`;
+          $("#revCb").addEventListener("click",()=>{ inp.disabled=true; $("#okC").parentNode.remove(); say(el,""); r.rev=true; fin(true); });
+        }
+      }
+    }
+  };
+
+  /* ---- correction finale ---- */
+  function fin(revele){
+    r.done=true; save(); header({type:"sit",idx:i});
+    let lignes, extra, phrase;
+    if(s.cas<=2){
+      lignes=[`${nb(s.val)} ${s.de}<span class="op">=</span><strong>${nb(s.res)} ${s.vers}</strong>`];
+      extra=escalier(s.cas,s.de,s.vers);
+      phrase=`On lit le tableau à partir de la colonne des ${s.vers}.`;
+    } else if(s.cas===3){
+      lignes=[`${nb(s.plan)} cm<span class="op">×</span>${nb(s.ech)}<span class="op">=</span>${nb(s.reelCm)} cm`,
+              `${nb(s.reelCm)} cm<span class="op">=</span><strong>${nb(s.res,2)} m</strong>`];
+      extra=figEchelle(s);
+      phrase=`La ${s.ouvrage} mesure réellement ${nb(s.res,2)} m.`;
+    } else {
+      lignes=[`${nb(s.reel,2)} m<span class="op">=</span>${nb(s.reelCm)} cm`,
+              `${nb(s.reelCm)}<span class="op">÷</span>${nb(s.ech)}<span class="op">=</span><strong>${nb(s.res)} cm</strong>`];
+      extra=figEchelle(s);
+      phrase=`Sur le plan, on trace un trait de ${nb(s.res)} cm.`;
+    }
+    corr.innerHTML=`<div class="corr ${revele?"shown":""} reveal" role="status">
+      <div class="c-head">${revele?"Correction":"✓ Bonne réponse"}</div>
+      ${lignes.map(l=>`<div class="fscroll"><span class="fbox">${l}</span></div>`).join("")}
+      <p class="c-phrase">${typo(phrase)}</p>
+      ${extra}
+      <div class="actions"><button type="button" class="btn" id="next">${i===MOD.nb-1?"Voir le bilan →":"Situation suivante →"}</button></div>
+    </div>`;
+    const bt=$("#next"); bt.addEventListener("click",()=>advance(i));
+    setTimeout(()=>{ corr.scrollIntoView({behavior:"smooth",block:"nearest"}); bt.focus({preventScroll:true}); },80);
+  }
+
+  ETAPES[suite[0]](box[0]);
+}
+
+/* ---- l’escalier des unités, animé ---- */
+function escalier(cas, de, vers){
+  const U = cas===1 ? ["km","hm","dam","m","dm","cm","mm"] : ["km²","hm²","dam²","m²","dm²","cm²","mm²"];
+  const pas = cas===1 ? 10 : 100;
+  const iD=U.indexOf(de), iV=U.indexOf(vers);
+  const n=Math.abs(iV-iD), total=Math.pow(pas,n), sens=iV>iD?"×":"÷";
+  const w=52, h=34, y=96, x=i=>10+i*w;
+  const cells=U.map((u,i)=>{
+    const cl = i===iD ? "eu de" : i===iV ? "eu vers" : "eu";
+    return `<g class="app d${Math.min(4,1+Math.floor(i/2))}"><rect class="${cl}" x="${x(i)}" y="${y}" width="${w-6}" height="${h}" rx="6"/>
+      <text x="${x(i)+(w-6)/2}" y="${y+h/2+5}" text-anchor="middle" class="eut">${u}</text></g>`;
+  }).join("");
+  const x1=x(iD)+(w-6)/2, x2=x(iV)+(w-6)/2, mid=(x1+x2)/2, dir=x2>x1?1:-1;
+  const arc=`<path class="fleche" d="M${x1},${y-6} Q${mid},${y-62} ${x2-dir*10},${y-8}"/>
+    <path class="pointe" d="M${x2},${y-2} l${-dir*9},-9 l${dir*2},9 z"/>`;
+  return `<div class="fig"><svg viewBox="0 0 400 162" role="img" aria-label="Escalier des unités">
+    ${arc}
+    <text class="grand" x="${mid}" y="${y-70}" text-anchor="middle">${sens} ${nb(total)}</text>
+    ${cells}
+    <text class="nom" x="200" y="${y+h+20}" text-anchor="middle">${n} échelon${n>1?"s":""} — chaque échelon vaut ${pas}${cas===2?" pour les surfaces":""}</text>
+  </svg></div>`;
+}
+
+
+function renderSitPyth(i){
+  const s=SITS_P[i], r=state.results[i], k=cotes(s);
+  const attendu = s.cherche==="verif" ? "verif" : (s.cherche==="c" ? "hyp" : "cote");
+  const opts=shuffle(["hyp","cote","verif","perim"]);
+  let t3=0,t4=0,t5=0;
+  header({type:"sit",idx:i});
+
+  app.innerHTML=`
+  <article class="card reveal">
+    <p class="kicker">Situation ${i+1}</p>
+    <div class="figwrap"><p class="enonce">${typo(s.texte)}</p><div class="figcol" id="figbox">${figure(s,{})}</div></div>
+    <section class="step" id="st1"></section>
+    <section class="step" id="st2" hidden></section>
+    <section class="step" id="st3" hidden></section>
+    <section class="step" id="st4" hidden></section>
+    <section class="step" id="st5" hidden></section>
+    <div id="corr"></div>
+  </article>`;
+  const st1=$("#st1"),st2=$("#st2"),st3=$("#st3"),st4=$("#st4"),st5=$("#st5"),corr=$("#corr");
+
+  function refig(opt){ $("#figbox").innerHTML=figure(s,opt); }
+  function markDone(el,titre,html){
+    el.classList.add("is-done");
+    el.innerHTML=`<div class="done reveal"><span class="chk" aria-hidden="true">✓</span><div class="done-b"><div class="done-k">${titre}</div><div>${html}</div></div></div>`;
+  }
+  function open(el){ el.hidden=false; el.classList.add("reveal"); setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"nearest"}),60); }
+  function say(el,html){ el.querySelector(".fb").innerHTML=html; }
+  const LBL={hyp:"La longueur de l’hypoténuse, le côté le plus long",
+             cote:"La longueur d’un côté de l’angle droit",
+             verif:"Savoir si l’angle est bien droit",
+             perim:"Le périmètre du triangle"};
+
+  /* ---- étape 1 ---- */
+  st1.innerHTML=`<h3><span class="sn">Étape 1</span>Qu’est-ce qu’on cherche ?</h3>
+    <div class="options">${opts.map(o=>`<button type="button" class="opt" data-o="${o}">${typo(LBL[o])}</button>`).join("")}</div>
+    <div class="fb" aria-live="polite"></div>`;
+  st1.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+    const o=b.dataset.o;
+    if(o===attendu){ markDone(st1,"Étape 1 · Ce que l’on cherche",typo(LBL[o])); step2(); return; }
+    b.classList.add("wrong"); b.disabled=true; r.e1++; save();
+    let m;
+    if(o==="perim") m="Le périmètre n’est pas demandé ici, et il ne s’obtient pas avec Pythagore. Relis la question.";
+    else if(attendu==="verif") m="Regarde les mesures de l’énoncé : est-ce qu’il en manque une ? Si les trois sont données, c’est autre chose qui est demandé.";
+    else if(o==="verif") m="Ici l’angle droit est acquis. Regarde plutôt quelle mesure manque dans l’énoncé.";
+    else if(attendu==="hyp") m="L’hypoténuse est le côté le plus long, celui qui fait face à l’angle droit. Dans cette situation, est-elle donnée ou cherchée ?";
+    else m="Le côté cherché touche l’angle droit. Or ici, c’est la mesure du côté le plus long qui manque ou non : vérifie sur la figure.";
+    say(st1,`<div class="msg err">${typo(m)}</div>`);
+  }));
+
+  /* ---- étape 2 ---- */
+  function step2(){
+    const bonne=REL_OF[s.cas];
+    st2.innerHTML=`<h3><span class="sn">Étape 2</span>Choisis la bonne relation</h3>
+      <div class="options">${["A","B","C","D"].map(L=>`
+        <button type="button" class="opt fopt" data-r="${L}">
+          <span class="letter">${L}</span>
+          <span class="ftxt"><span class="flhs">${RELS[L].titre}</span><span class="frhs"><span class="fbox">${RELS[L].html}</span></span></span>
+        </button>`).join("")}</div>
+      <div class="fb" aria-live="polite"></div>`;
+    open(st2);
+    st2.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+      const L=b.dataset.r;
+      if(L===bonne){
+        markDone(st2,`Étape 2 · Relation ${L}`,`<div class="fscroll"><span class="fbox">${RELS[L].html}</span></div>`);
+        refig({montre:s.cherche==="verif"?null:s.cherche});
+        step3(); return;
+      }
+      b.classList.add("wrong"); b.disabled=true; r.e2++; save();
+      let m;
+      if(L==="D") m="Le périmètre ne fait pas intervenir le théorème de Pythagore.";
+      else if(bonne==="C") m="Cette relation sert à calculer une longueur manquante. Ici, les trois mesures sont connues : la question porte sur l’angle.";
+      else if(L==="C") m="Ici, on ne vérifie rien : l’angle droit est donné, et il manque une longueur.";
+      else if(bonne==="A") m="Cette relation sert quand l’hypoténuse est connue. Or ici, c’est elle que l’on cherche.";
+      else m="Cette relation donne l’hypoténuse, le côté le plus long. Or ici, l’hypoténuse est déjà connue.";
+      say(st2,`<div class="msg err">${typo(m)}</div>`);
+    }));
+  }
+
+  /* ---- étape 3 : remplacer ---- */
+  const slot=(id,ph,aria)=>`<input id="in-${id}" class="slot" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="${ph}" aria-label="${aria}">`;
+  function step3(){
+    let corps;
+    if(s.cas===1) corps=eqHTML(sq(V("c")),`${slot("x","a","Mesure du côté a")}<sup>2</sup><span class="op">+</span>${slot("y","b","Mesure du côté b")}<sup>2</sup>`,"big");
+    else if(s.cas===2) corps=eqHTML(sq(V("a")),`${slot("x","c","Mesure de l’hypoténuse")}<sup>2</sup><span class="op">−</span>${slot("y","b","Mesure du côté connu")}<sup>2</sup>`,"big");
+    else corps=eqHTML(`${sq(V("a"))}<span class="op">+</span>${sq(V("b"))}`,`${slot("x","a","Mesure du côté a")}<sup>2</sup><span class="op">+</span>${slot("y","b","Mesure du côté b")}<sup>2</sup>`,"big")
+       + eqHTML(sq(V("c")),`${slot("z","c","Mesure du plus grand côté")}<sup>2</sup>`,"big");
+    st3.innerHTML=`<h3><span class="sn">Étape 3</span>Remplace les lettres par les mesures de l’énoncé</h3>
+      <p class="hint">${typo("Les mesures sont sur la figure. Écris-les dans l’unité de l’énoncé ("+s.unite+").")}</p>
+      ${corps}
+      <div class="actions"><button type="button" class="btn" id="ok3">Valider</button><span id="rev3"></span></div>
+      <div class="fb" aria-live="polite"></div>`;
+    open(st3);
+    const ins=["x","y"].concat(s.cas===3?["z"]:[]).map(id=>$("#in-"+id));
+    setTimeout(()=>ins[0].focus({preventScroll:true}),260);
+    ins.forEach((inp,n)=>{
+      inp.addEventListener("input",()=>inp.classList.remove("bad","good"));
+      inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); const nx=ins[n+1]; if(nx && !nx.value.trim()) nx.focus(); else check(); } });
+    });
+    $("#ok3").addEventListener("click",check);
+
+    function attendus(){
+      if(s.cas===1) return [k.a.val,k.b.val];
+      if(s.cas===2) return [k.c.val,k.b.val];
+      return [k.a.val,k.b.val,k.c.val];
+    }
+    function check(){
+      const vals=ins.map(x=>x.value.trim());
+      if(vals.some(v=>!v)){ say(st3,`<div class="msg err">Complète toutes les cases avant de valider.</div>`); ins[vals.findIndex(v=>!v)].focus(); return; }
+      const nums=vals.map(parseNum);
+      if(nums.some(isNaN)){ say(st3,`<div class="msg err">${typo("Écris uniquement des nombres (par exemple 1,20 ou 600).")}</div>`); return; }
+      const att=attendus();
+      const ok=nums.map((v,n)=>close(v,att[n],1e-9*Math.max(1,att[n])));
+      ins.forEach((inp,n)=>{ inp.classList.toggle("good",ok[n]); inp.classList.toggle("bad",!ok[n]); });
+      if(ok.every(Boolean)){ finish(false); return; }
+      r.e3++; t3++; save();
+      const dispo=numbersIn(s.texte);
+      const lignes=[];
+      if(s.cas===2 && close(nums[0],att[1],1e-9) && close(nums[1],att[0],1e-9))
+        lignes.push("Les deux mesures sont inversées. Dans une soustraction, le carré de l’hypoténuse vient en premier : c’est la plus grande mesure.");
+      else if(s.cas===1 && nums.length===2 && close(nums[0],att[1],1e-9) && close(nums[1],att[0],1e-9))
+        lignes.push("Les deux mesures sont inversées : place la mesure de a puis celle de b, comme sur la figure.");
+      else {
+        nums.forEach((v,n)=>{
+          if(ok[n]) return;
+          const nomCase = s.cas===2 && n===0 ? "l’hypoténuse c" : (s.cas===3 && n===2 ? "le plus grand côté c" : (n===0?"le côté a":"le côté b"));
+          if(s.cherche!=="verif" && close(v,resultat(s),tolL(s)))
+            lignes.push("Une des cases contient la mesure que l’on cherche : elle n’est pas connue, c’est justement le résultat.");
+          else if(dispo.some(d=>close(v,d,1e-9)))
+            lignes.push(`Pour ${nomCase} : cette mesure figure bien dans l’énoncé, mais ce n’est pas celle de ce côté. Regarde la figure.`);
+          else
+            lignes.push(`Pour ${nomCase} : cette mesure n’est pas celle de l’énoncé.`);
+        });
+      }
+      say(st3,`<div class="msg err">${[...new Set(lignes)].map(typo).join("<br>")}</div>`);
+      if(t3>=3 && !$("#rev3btn")){
+        $("#rev3").innerHTML=`<button type="button" class="btn quiet" id="rev3btn">Afficher les bonnes mesures</button>`;
+        $("#rev3btn").addEventListener("click",()=>{ r.aide=true; save(); finish(true); });
+      }
+    }
+    function finish(aide){
+      let html;
+      if(s.cas===1) html=eqHTML(sq(V("c")),`${sq(fmtL(k.a.val,s))}<span class="op">+</span>${sq(fmtL(k.b.val,s))}`,"big");
+      else if(s.cas===2) html=eqHTML(sq(V("a")),`${sq(fmtL(k.c.val,s))}<span class="op">−</span>${sq(fmtL(k.b.val,s))}`,"big");
+      else html=eqHTML(`${sq(V("a"))}<span class="op">+</span>${sq(V("b"))}`,`${sq(fmtL(k.a.val,s))}<span class="op">+</span>${sq(fmtL(k.b.val,s))}`,"big")
+          + eqHTML(sq(V("c")),`${sq(fmtL(k.c.val,s))}`,"big");
+      markDone(st3,"Étape 3 · La relation avec les mesures",html+(aide?`<div class="done-note">Mesures affichées après plusieurs essais.</div>`:""));
+      step4();
+    }
+  }
+
+  /* ---- étape 4 : les carrés ---- */
+  function step4(){
+    const u=s.unite+"²";
+    let corps;
+    if(s.cas===3) corps=`
+      <div class="answer"><span class="lab">${sq(V("a"))} + ${sq(V("b"))} =</span><input id="in-g" class="slot lg" type="text" inputmode="decimal" autocomplete="off" aria-label="Somme des carrés"><span class="unit">${u}</span></div>
+      <div class="answer"><span class="lab">${sq(V("c"))} =</span><input id="in-d" class="slot lg" type="text" inputmode="decimal" autocomplete="off" aria-label="Carré du plus grand côté"><span class="unit">${u}</span></div>`;
+    else corps=`<div class="answer"><span class="lab">${sq(V(s.cas===1?"c":"a"))} =</span><input id="in-g" class="slot lg" type="text" inputmode="decimal" autocomplete="off" aria-label="Carré cherché"><span class="unit">${u}</span></div>`;
+    st4.innerHTML=`<h3><span class="sn">Étape 4</span>${s.cas===3?"Calcule les deux membres":"Calcule le carré"}</h3>
+      <p class="hint">${typo("Calculatrice autorisée. Attention : on calcule des carrés, pas des longueurs.")}</p>
+      ${corps}
+      <div class="actions"><button type="button" class="btn" id="ok4">Valider</button><span id="rev4"></span></div>
+      <div class="fb" aria-live="polite"></div>`;
+    open(st4);
+    const ing=$("#in-g"), ind=s.cas===3?$("#in-d"):null;
+    setTimeout(()=>ing.focus({preventScroll:true}),260);
+    [ing,ind].filter(Boolean).forEach((inp,n,arr2)=>{
+      inp.addEventListener("input",()=>inp.classList.remove("bad","good"));
+      inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); const nx=arr2[n+1]; if(nx && !nx.value.trim()) nx.focus(); else check(); } });
+    });
+    $("#ok4").addEventListener("click",check);
+
+    function check(){
+      const vg=parseNum(ing.value), vd=ind?parseNum(ind.value):null;
+      if(ing.value.trim()==="" || (ind && ind.value.trim()==="")){ say(st4,`<div class="msg err">Complète le calcul avant de valider.</div>`); return; }
+      if(isNaN(vg) || (ind && isNaN(vd))){ say(st4,`<div class="msg err">${typo("Écris uniquement un nombre.")}</div>`); return; }
+      const m=membres(s);
+      const attG = s.cas===3 ? m.g : carreCherche(s);
+      const okG=close(vg,attG,tolC(s));
+      const okD= ind ? close(vd,m.d,tolC(s)) : true;
+      ing.classList.toggle("good",okG); ing.classList.toggle("bad",!okG);
+      if(ind){ ind.classList.toggle("good",okD); ind.classList.toggle("bad",!okD); }
+      if(okG&&okD){
+        [ing,ind].filter(Boolean).forEach(x=>x.disabled=true);
+        $("#ok4").parentNode.remove(); say(st4,"");
+        step5(); return;
+      }
+      r.e4++; t4++; save();
+      const lignes=[];
+      if(!okG) lignes.push(diagCarre(vg, s.cas===3?"somme":"cherche"));
+      if(ind&&!okD) lignes.push(diagCarre(vd,"grand"));
+      let html=lignes.filter(Boolean).map(x=>`<div class="msg err">${typo(x)}</div>`).join("");
+      if(!html) html=`<div class="msg err">Ce n’est pas le bon résultat.</div>`;
+      if(t4>=2) html+=`<div class="msg help">${typo(aideCarre())}</div>`;
+      say(st4,html);
+      if(t4>=3 && !$("#rev4btn")){
+        $("#rev4").innerHTML=`<button type="button" class="btn quiet" id="rev4btn">Voir la correction</button>`;
+        $("#rev4btn").addEventListener("click",()=>{ r.rev=true; r.done=true; save(); header({type:"sit",idx:i}); refig({montre:s.cherche==="verif"?null:s.cherche,trouve:true,verdict:s.cherche==="verif"?(estDroit(s)?"ok":"ko"):null}); showCorrection(true); });
+      }
+    }
+    function diagCarre(v,quoi){
+      const A=k.a.val,B=k.b.val,C=k.c.val, m=membres(s);
+      if(quoi==="grand"){
+        if(close(v,C,tolL(s))) return "Tu as recopié la mesure : il faut son carré, donc la multiplier par elle-même.";
+        if(close(v,2*C,tolL(s))) return "Élever au carré, ce n’est pas multiplier par 2 : c’est multiplier le nombre par lui-même.";
+        return "Le carré du plus grand côté n’est pas correct. Multiplie cette mesure par elle-même.";
+      }
+      if(s.cas===1){
+        if(close(v,A+B,tolL(s))) return "Tu as additionné les deux mesures. Il faut additionner leurs CARRÉS.";
+        if(close(v,Math.sqrt(m.g),tolL(s))) return "C’est la longueur de l’hypoténuse, pas son carré. Ici, on s’arrête au carré.";
+        if(close(v,Math.abs(A*A-B*B),tolC(s))) return "Tu as soustrait les carrés. Pour l’hypoténuse, on les additionne.";
+        if(close(v,2*A+2*B,tolL(s))) return "Élever au carré, ce n’est pas multiplier par 2.";
+      } else if(s.cas===2){
+        if(close(v,C*C+B*B,tolC(s))) return "Tu as additionné les carrés. Comme l’hypoténuse est connue, on les soustrait.";
+        if(close(v,C-B,tolL(s))) return "Tu as soustrait les mesures. Il faut soustraire leurs CARRÉS.";
+        if(close(v,Math.sqrt(carreCherche(s)),tolL(s))) return "C’est la longueur cherchée, pas son carré. On s’arrête ici au carré.";
+        if(v<0) return "Un carré ne peut pas être négatif : commence par le carré de l’hypoténuse, la plus grande mesure.";
+      } else {
+        if(close(v,A+B,tolL(s))) return "Tu as additionné les deux mesures. Il faut additionner leurs CARRÉS.";
+        if(close(v,Math.sqrt(m.g),tolL(s))) return "C’est une longueur, pas un carré.";
+      }
+      return "Ce n’est pas le bon résultat. Reprends chaque carré séparément, puis fais l’opération.";
+    }
+    function aideCarre(){
+      const A=k.a.val,B=k.b.val,C=k.c.val;
+      if(s.cas===1) return `Aide : ${fmtL(A,s)}² = ${fmtC(A*A,s)} et ${fmtL(B,s)}² = ${fmtC(B*B,s)}. Il reste à les additionner.`;
+      if(s.cas===2) return `Aide : ${fmtL(C,s)}² = ${fmtC(C*C,s)} et ${fmtL(B,s)}² = ${fmtC(B*B,s)}. Il reste à les soustraire, le plus grand d’abord.`;
+      return `Aide : ${fmtL(A,s)}² = ${fmtC(A*A,s)}, ${fmtL(B,s)}² = ${fmtC(B*B,s)} et ${fmtL(C,s)}² = ${fmtC(C*C,s)}.`;
+    }
+  }
+
+  /* ---- étape 5 : conclure ---- */
+  function step5(){
+    if(s.cherche==="verif"){
+      const m=membres(s), droit=estDroit(s);
+      st5.innerHTML=`<h3><span class="sn">Étape 5</span>Conclus</h3>
+        <div class="fscroll"><span class="fbox">${sq(V("a"))}<span class="op">+</span>${sq(V("b"))}<span class="op">=</span>${fmtC(m.g,s)}<span class="op">et</span>${sq(V("c"))}<span class="op">=</span>${fmtC(m.d,s)}</span></div>
+        <p class="hint">${typo("Compare les deux nombres obtenus.")}</p>
+        <div class="options">
+          <button type="button" class="opt" data-v="oui">Les deux membres sont égaux : l’angle est droit</button>
+          <button type="button" class="opt" data-v="non">Les deux membres sont différents : l’angle n’est pas droit</button>
+        </div>
+        <div class="fb" aria-live="polite"></div>`;
+      open(st5);
+      st5.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+        const bon=(b.dataset.v==="oui")===droit;
+        if(bon){
+          markDone(st5,"Étape 5 · Conclusion", droit?"Les deux membres sont égaux : l’angle est droit.":"Les deux membres sont différents : l’angle n’est pas droit.");
+          r.done=true; save(); header({type:"sit",idx:i});
+          refig({verdict:droit?"ok":"ko"});
+          showCorrection(false); return;
+        }
+        b.classList.add("wrong"); b.disabled=true; r.e5++; save();
+        say(st5,`<div class="msg err">${typo("Relis les deux nombres que tu viens de calculer, chiffre par chiffre : sont-ils vraiment identiques ?")}</div>`);
+      }));
+      return;
+    }
+    const K=carreCherche(s), res=resultat(s), lettre=s.cas===1?"c":"a";
+    st5.innerHTML=`<h3><span class="sn">Étape 5</span>Déduis la longueur</h3>
+      <p class="hint">${typo("Tu connais le carré : prends maintenant la racine carrée."+(s.arrondi?" Arrondis au centimètre, soit deux chiffres après la virgule.":""))}</p>
+      <div class="answer"><span class="lab"><span class="fbox">${V(lettre)}<span class="op">=</span>${racine(fmtC(K,s))}<span class="op">=</span></span></span>
+        <input id="in-r" class="slot lg" type="text" inputmode="decimal" autocomplete="off" aria-label="Longueur cherchée"><span class="unit">${s.unite}</span></div>
+      <div class="actions"><button type="button" class="btn" id="ok5">Valider</button><span id="rev5"></span></div>
+      <div class="fb" aria-live="polite"></div>`;
+    open(st5);
+    const inR=$("#in-r");
+    setTimeout(()=>inR.focus({preventScroll:true}),260);
+    inR.addEventListener("input",()=>inR.classList.remove("bad"));
+    inR.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); } });
+    $("#ok5").addEventListener("click",check);
+    function check(){
+      if(!inR.value.trim()){ say(st5,`<div class="msg err">Saisis ta réponse avant de valider.</div>`); return; }
+      const v=parseNum(inR.value);
+      if(isNaN(v)){ say(st5,`<div class="msg err">${typo("Écris uniquement un nombre.")}</div>`); return; }
+      if(close(v,res,tolL(s))){
+        inR.classList.add("good"); inR.disabled=true; $("#ok5").parentNode.remove(); say(st5,"");
+        r.done=true; save(); header({type:"sit",idx:i});
+        refig({montre:s.cherche,trouve:true});
+        showCorrection(false); return;
+      }
+      r.e5++; t5++; save(); inR.classList.add("bad");
+      let m;
+      if(close(v,K,Math.max(tolC(s),0.01))) m="C’est le carré, pas la longueur. Il reste à prendre la racine carrée.";
+      else if(close(v,K/2,Math.max(tolC(s),0.01))) m="La racine carrée n’est pas la moitié : cherche le nombre qui, multiplié par lui-même, donne "+fmtC(K,s)+".";
+      else if(Math.abs(v-res)<Math.max(s.unite==="mm"?5:0.05,0)) m="Tu es très proche : vérifie ton arrondi"+(s.arrondi?" au centimètre.":".");
+      else m="Ce n’est pas la bonne longueur. Sur la calculatrice, utilise la touche racine carrée (√) appliquée à "+fmtC(K,s)+".";
+      let html=`<div class="msg err">${typo(m)}</div>`;
+      if(t5>=2) html+=`<div class="msg help">${typo("Aide : tu cherches le nombre dont le carré vaut "+fmtC(K,s)+". Tape √ puis ce nombre sur ta calculatrice.")}</div>`;
+      say(st5,html);
+      if(t5>=3 && !$("#rev5btn")){
+        $("#rev5").innerHTML=`<button type="button" class="btn quiet" id="rev5btn">Voir la correction</button>`;
+        $("#rev5btn").addEventListener("click",()=>{ inR.disabled=true; $("#ok5").parentNode.remove(); say(st5,""); r.rev=true; r.done=true; save(); header({type:"sit",idx:i}); refig({montre:s.cherche,trouve:true}); showCorrection(true); });
+      }
+    }
+  }
+
+  /* ---- correction ---- */
+  function showCorrection(revele){
+    const u=s.unite;
+    let lignes;
+    if(s.cherche==="verif"){
+      const m=membres(s), droit=estDroit(s);
+      lignes=[`${sq(V("a"))}<span class="op">+</span>${sq(V("b"))}<span class="op">=</span>${sq(fmtL(k.a.val,s))}<span class="op">+</span>${sq(fmtL(k.b.val,s))}<span class="op">=</span>${fmtC(m.g,s)}`,
+              `${sq(V("c"))}<span class="op">=</span>${sq(fmtL(k.c.val,s))}<span class="op">=</span>${fmtC(m.d,s)}`,
+              `${fmtC(m.g,s)}<span class="op">${droit?"=":"≠"}</span>${fmtC(m.d,s)}`];
+    } else {
+      const K=carreCherche(s), lettre=s.cas===1?"c":"a", A=k.a.val,B=k.b.val,C=k.c.val;
+      lignes = s.cas===1
+        ? [`${sq(V("c"))}<span class="op">=</span>${sq(fmtL(A,s))}<span class="op">+</span>${sq(fmtL(B,s))}`,
+           `${sq(V("c"))}<span class="op">=</span>${fmtC(A*A,s)}<span class="op">+</span>${fmtC(B*B,s)}<span class="op">=</span>${fmtC(K,s)}`,
+           `${V("c")}<span class="op">=</span>${racine(fmtC(K,s))}<span class="op">${s.arrondi?"≈":"="}</span><strong>${fmtLU(resultat(s),s)}</strong>`]
+        : [`${sq(V("a"))}<span class="op">=</span>${sq(fmtL(C,s))}<span class="op">−</span>${sq(fmtL(B,s))}`,
+           `${sq(V("a"))}<span class="op">=</span>${fmtC(C*C,s)}<span class="op">−</span>${fmtC(B*B,s)}<span class="op">=</span>${fmtC(K,s)}`,
+           `${V("a")}<span class="op">=</span>${racine(fmtC(K,s))}<span class="op">${s.arrondi?"≈":"="}</span><strong>${fmtLU(resultat(s),s)}</strong>`];
+    }
+    let note="";
+    if(s.cherche==="verif" && !estDroit(s)) note=`Pour être d’équerre, la mesure du plus grand côté devrait être de ${fmtLU(bonneDiag(s),s)} au lieu de ${fmtLU(k.c.val,s)}.`;
+    else if(s.cherche==="verif") note="Sur le chantier, c’est exactement ce contrôle que l’on fait avec un mètre, sans équerre.";
+    else note=`Vérification rapide : l’hypoténuse ${s.cas===1?"trouvée":"donnée"} doit toujours être la plus grande des trois mesures.`;
+    corr.innerHTML=`<div class="corr ${revele?"shown":""} reveal" role="status">
+      <div class="c-head">${revele?"Correction":"✓ Bonne réponse"}</div>
+      ${lignes.map(l=>`<div class="fscroll"><span class="fbox">${l}</span></div>`).join("")}
+      <p class="c-phrase">${typo(s.phrase.replace("{R}",fmtLU(resultat(s),s)))}</p>
+      <p class="c-note">${typo(note)}</p>
+      <div class="actions"><button type="button" class="btn" id="next">${i===11?"Voir le bilan →":"Situation suivante →"}</button></div>
+    </div>`;
+    const nb2=$("#next");
+    nb2.addEventListener("click",()=>advance(i));
+    setTimeout(()=>{ corr.scrollIntoView({behavior:"smooth",block:"nearest"}); nb2.focus({preventScroll:true}); },80);
+  }
+}
+
+
+/* =========================================================
+   LES DEUX RAPPELS
+   ========================================================= */
+const MODS=[
+ { nom:"Le théorème de Pythagore", court:"Pythagore",
+   resume:"Diagonales, équerrage, longueurs de rampants et d’échelles.",
+   parts:PARTS_P, sits:SITS_P, nb:SITS_P.length, perPart:4,
+   key:"rappel-pythagore-v1", rend:i=>renderSitPyth(i),
+   cats:[
+     {k:"e1",lib:"sur ce que l’on cherche",nom:"identifier ce que l’on cherche",c:"Commence toujours par repérer l’hypoténuse : c’est le côté le plus long, face à l’angle droit. Puis regarde quelle mesure manque."},
+     {k:"e2",lib:"de choix de relation",nom:"choisir la relation",c:"Hypoténuse cherchée : on additionne les carrés. Côté de l’angle droit cherché : on soustrait. Aucune mesure manquante : on compare."},
+     {k:"e3",lib:"de remplacement",nom:"remplacer par les mesures",c:"Note les mesures sur ton croquis avant de calculer : a et b sur l’angle droit, c en face."},
+     {k:"e4",lib:"de calcul des carrés",nom:"calculer les carrés",c:"Élever au carré, c’est multiplier le nombre par lui-même, jamais par 2."},
+     {k:"e5",lib:"de conclusion",nom:"conclure",c:"Le calcul donne un carré : il reste la racine carrée pour revenir à une longueur."}
+   ],
+   synth:()=>`<div class="synth">
+     <div class="sbox"><h4>Je cherche l’hypoténuse</h4><div class="fscroll"><span class="fbox">${RELS.A.html}</span></div><p class="small" style="margin:6px 0 0">On additionne, puis racine carrée.</p></div>
+     <div class="sbox"><h4>Je cherche un côté de l’angle droit</h4><div class="fscroll"><span class="fbox">${RELS.B.html}</span></div><p class="small" style="margin:6px 0 0">On soustrait, le plus grand carré d’abord, puis racine carrée.</p></div>
+     <div class="sbox"><h4>Je vérifie l’équerrage</h4><div class="fscroll"><span class="fbox">${RELS.C.html}</span></div><p class="small" style="margin:6px 0 0">Égaux : angle droit. Différents : pas d’équerre.</p></div>
+   </div>`,
+   reflex:["Je fais un croquis et je repère l’angle droit.",
+           "Je place l’hypoténuse : le côté le plus long, face à l’angle droit.",
+           "Je regarde ce qui manque, ou ce qu’il faut vérifier.",
+           "J’écris la relation, puis je remplace par les mesures.",
+           "Je calcule les carrés, puis la racine carrée.",
+           "Je réponds par une phrase, avec l’unité."] },
+
+ { nom:"Conversions et échelles de plan", court:"Conversions et échelles",
+   resume:"mm, cm, m, surfaces, et lecture d’un plan à l’échelle.",
+   parts:PARTS_C, sits:SITS_C, nb:SITS_C.length, perPart:4,
+   key:"rappel-conversions-v1", rend:i=>renderSitConv(i),
+   cats:[
+     {k:"e1",lib:"de repérage",nom:"repérer la case de départ ou le sens",c:"Le chiffre des unités se place dans la colonne de son unité — et dans la case de droite pour une surface."},
+     {k:"e2",lib:"de tableau",nom:"remplir le tableau",c:"Un chiffre par case, puis des zéros jusqu’à la colonne demandée. Les cases inutiles restent vides."},
+     {k:"e3",lib:"de calcul",nom:"calculer avec l’échelle",c:"Du plan vers le réel on multiplie, du réel vers le plan on divise."},
+     {k:"e4",lib:"de lecture",nom:"lire le résultat",c:"La virgule se place après la colonne de l’unité demandée, et on écrit un 0 devant si le nombre est inférieur à 1."},
+     {k:"e5",lib:"",nom:"",c:""}
+   ],
+   synth:()=>`<div class="synth">
+     <div class="sbox"><h4>Longueurs</h4><p class="small" style="margin:0">Une colonne par unité.<br>1 m = 100 cm = 1 000 mm.</p></div>
+     <div class="sbox"><h4>Surfaces</h4><p class="small" style="margin:0">Deux colonnes par unité.<br>1 m² = 10 000 cm², 1 cm² = 100 mm².</p></div>
+     <div class="sbox"><h4>Échelle d’un plan</h4><p class="small" style="margin:0">Du plan au réel : on multiplie par l’échelle.<br>Du réel au plan : on divise.</p></div>
+   </div>`,
+   reflex:["Je repère l’unité de départ et l’unité demandée.",
+           "Je repère la case du chiffre des unités : deux cases par unité pour une surface.",
+           "Je place le nombre dans le tableau, une case par chiffre.",
+           "Pour un plan, je repère l’échelle et le sens : plan → réel ou réel → plan.",
+           "Je complète avec des zéros jusqu’à la colonne demandée.",
+           "Je vérifie l’ordre de grandeur et j’écris l’unité."] }
+];
+
+/* =========================================================
+   ÉTAT
+   ========================================================= */
+let MOD=MODS[0];
+let state=null;   /* null = écran d’accueil */
+
+function fresh(m){
+  return { mod:m, screen:"part", idx:0, part:0,
+    results:Array.from({length:MODS[m].nb},()=>({e1:0,e2:0,e3:0,e4:0,e5:0,aide:false,rev:false,done:false})) };
+}
+function valid(st,m){
+  return st && typeof st==="object" && Array.isArray(st.results) && st.results.length===MODS[m].nb
+    && typeof st.idx==="number" && st.idx>=0 && st.idx<MODS[m].nb
+    && typeof st.part==="number" && st.part>=0 && st.part<MODS[m].parts.length
+    && ["part","sit","bilan"].includes(st.screen);
+}
+function loadMod(m){ try{ const raw=localStorage.getItem(MODS[m].key); const st=raw?JSON.parse(raw):null; return valid(st,m)?st:null; }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem(MOD.key,JSON.stringify(state)); }catch(e){} }
+
+const app=document.getElementById("app");
+
+/* =========================================================
+   EN-TÊTE
+   ========================================================= */
+function header(mode){
+  const hdr=document.getElementById("hdr");
+  if(!mode){ hdr.hidden=true; return; }
+  hdr.hidden=false;
+  document.getElementById("hdr-brand").textContent=MOD.nom;
+  const d=state.results.filter(r=>r.done).length, N=MOD.nb;
+  document.getElementById("hdr-count").innerHTML = mode.type==="sit" ? `Situation <b>${mode.idx+1}</b> / ${N}`
+    : mode.type==="part" ? `Partie <b>${mode.p+1}</b> sur ${MOD.parts.length}` : `<b>Bilan</b>`;
+  const bar=document.getElementById("hdr-bar");
+  bar.setAttribute("aria-valuemax",N); bar.setAttribute("aria-valuenow",d);
+  bar.firstElementChild.style.width=(d/N*100)+"%";
+  const cur = mode.type==="sit" ? Math.floor(mode.idx/MOD.perPart) : mode.type==="part" ? mode.p : -1;
+  document.getElementById("hdr-parts").innerHTML=MOD.parts.map((P,k)=>{
+    const fin=state.results.slice(k*MOD.perPart,(k+1)*MOD.perPart).every(r=>r.done);
+    const cls=[k===cur?"cur":"", fin&&k!==cur?"fin":""].join(" ").trim();
+    return `<li class="${cls}"${k===cur?' aria-current="step"':""}><span class="pn">${fin&&k!==cur?"✓":k+1}</span><span>${P.court}</span></li>`;
+  }).join("");
+  document.getElementById("hdr-parts").style.gridTemplateColumns=`repeat(${MOD.parts.length},minmax(0,1fr))`;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+function route(){
+  if(!state){ renderAccueil(); window.scrollTo(0,0); return; }
+  if(state.screen==="part") renderPart(state.part);
+  else if(state.screen==="sit"){
+    if(state.results[state.idx].done){ advance(state.idx); return; }
+    MOD.rend(state.idx);
+  }
+  else renderBilan();
+  window.scrollTo(0,0);
+}
+function advance(i){
+  if(i>=MOD.nb-1) state.screen="bilan";
+  else if((i+1)%MOD.perPart===0){ state.screen="part"; state.part=(i+1)/MOD.perPart; state.idx=i+1; }
+  else { state.screen="sit"; state.idx=i+1; }
+  save(); route();
+}
+function ouvrirModule(m,reprendre){
+  MOD=MODS[m];
+  const sv=reprendre?loadMod(m):null;
+  state = sv || fresh(m);
+  if(!sv){ state.screen="part"; state.part=0; state.idx=0; }
+  save(); route();
+}
+function retourAccueil(){ state=null; route(); }
+
+/* =========================================================
+   ACCUEIL
+   ========================================================= */
+function renderAccueil(){
+  header(null);
+  const cartes=MODS.map((M,m)=>{
+    const sv=loadMod(m);
+    const faites=sv?sv.results.filter(r=>r.done).length:0;
+    const etat = !sv ? "" : faites>=M.nb ? `<span class="etat fin">Terminé</span>` : `<span class="etat">${faites} / ${M.nb} situations faites</span>`;
+    const boutons = !sv
+      ? `<button type="button" class="btn" data-go="${m}">Commencer</button>`
+      : `<button type="button" class="btn" data-reprendre="${m}">${faites>=M.nb?"Revoir le bilan":"Reprendre"}</button><button type="button" class="btn ghost" data-go="${m}">Recommencer</button>`;
+    return `<div class="mod on"><span class="num">${m+1}</span><div class="mod-b">
+      <h4>${M.nom}</h4><p>${typo(M.resume)} ${M.nb} situations, environ une heure.</p>
+      ${etat}<div class="actions">${boutons}</div></div></div>`;
+  }).join("");
+  app.innerHTML=`
+  <article class="card reveal">
+    <p class="kicker">Activité sur ordinateur — mathématiques appliquées</p>
+    <h1>Rappels de calcul professionnel</h1>
+    <p class="lead">Des calculs que tu utiliseras en agencement, en menuiserie et sur le chantier. Chaque rappel se fait en une séance.</p>
+    <div class="mods">${cartes}</div>
+    <h3 style="margin-top:26px">À chaque situation, tu devras :</h3>
+    <ol class="flow flow4">
+      <li>Dire ce que l’on cherche</li>
+      <li>Choisir la méthode</li>
+      <li>Poser le calcul</li>
+      <li>Calculer et conclure</li>
+    </ol>
+    <p class="small">${typo("Calculatrice autorisée. Ta progression est enregistrée dans ce navigateur, rappel par rappel.")}</p>
+  </article>`;
+  app.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>ouvrirModule(+b.dataset.go,false)));
+  app.querySelectorAll("[data-reprendre]").forEach(b=>b.addEventListener("click",()=>ouvrirModule(+b.dataset.reprendre,true)));
+}
+
+/* =========================================================
+   PRÉSENTATION D’UNE PARTIE
+   ========================================================= */
+function renderPart(p){
+  const P=MOD.parts[p];
+  header({type:"part",p});
+  const regle = P.regle || RELS[REL_OF[P.cas]].html;
+  app.innerHTML=`
+  <article class="card reveal">
+    <p class="kicker">Partie ${p+1} sur ${MOD.parts.length} — situations ${p*MOD.perPart+1} à ${(p+1)*MOD.perPart}</p>
+    <h2>${P.titre}</h2>
+    <div class="prow"><div class="pk">Ce que l’on cherche</div><div>${typo(P.cherche)}</div></div>
+    <div class="prow"><div class="pk">${P.regleK||"La relation"}</div><div><div class="fscroll"><span class="fbox big">${regle}</span></div></div></div>
+    <div class="prow"><div class="pk">En clair</div><div>${typo(P.expl)}</div></div>
+    <div class="prow"><div class="pk">Exemple</div><div>
+      <p>${typo(P.ex)}</p>
+      ${P.exLignes.map(l=>`<div class="fscroll"><span class="fbox">${l}</span></div>`).join("")}
+      <p class="ex-p">${typo(P.exPhrase)}</p>
+      ${P.attention?`<p class="warn">${typo(P.attention)}</p>`:""}
+      ${P.fig?P.fig():""}
+    </div></div>
+    ${P.contraste?`<div class="key soft"><p>${typo(P.contraste)}</p></div>`:""}
+    <p class="small">${typo(P.reperes)}</p>
+    <div class="actions"><button type="button" class="btn" id="go">Commencer la partie ${p+1}</button>
+      <button type="button" class="btn quiet" id="home">Tous les rappels</button></div>
+  </article>`;
+  document.getElementById("go").addEventListener("click",()=>{ state.screen="sit"; state.idx=p*MOD.perPart; save(); route(); });
+  document.getElementById("home").addEventListener("click",retourAccueil);
+}
+
+/* =========================================================
+   BILAN
+   ========================================================= */
+let confirmReset=false;
+function renderBilan(){
+  header({type:"bilan"}); confirmReset=false;
+  const R=state.results, N=MOD.nb;
+  const cats=MOD.cats.filter(c=>c.nom);
+  const sum=x=>R.reduce((a,r)=>a+r[x],0);
+  const errs=r=>cats.reduce((a,c)=>a+r[c.k],0);
+  const ok=R.filter(r=>r.done&&!r.rev).length;
+  const parfait=R.filter(r=>r.done&&!r.rev&&!r.aide&&errs(r)===0).length;
+  const E={}; cats.forEach(c=>E[c.k]=sum(c.k));
+  const tot=cats.reduce((a,c)=>a+E[c.k],0);
+  const pl=n=>n>1?"erreurs":"erreur";
+  const conseil = tot===0 ? "Aucune erreur sur l’ensemble du rappel : la méthode est acquise."
+    : (()=>{ const w=cats.reduce((a,c)=>E[c.k]>E[a.k]?c:a); return `Étape où tu as fait le plus d’erreurs : <strong>${w.nom}</strong>. ${w.c}`; })();
+  const titre=(r,j)=>{ if(!r.done) return `Situation ${j+1} : non faite`;
+    if(r.rev) return `Situation ${j+1} : correction affichée`;
+    const d=cats.filter(c=>r[c.k]).map(c=>r[c.k]+" "+c.lib);
+    if(r.aide) d.push("aide affichée");
+    return `Situation ${j+1} : `+(d.length?"réussie, erreurs : "+d.join(", "):"réussie sans erreur"); };
+  const cell=(r,j)=>`<span class="cell ${!r.done?"":r.rev?"r":(r.aide||errs(r)>0)?"e":"p"}" title="${titre(r,j)}">${j+1}</span>`;
+  const map=MOD.parts.map((P,kk)=>`<div class="maprow"><span class="ml">Partie ${kk+1}</span><span class="cells">${R.slice(kk*MOD.perPart,(kk+1)*MOD.perPart).map((r,j)=>cell(r,kk*MOD.perPart+j)).join("")}</span><span class="small" style="margin:0">${P.court}</span></div>`).join("");
+
+  app.innerHTML=`
+  <article class="card reveal">
+    <p class="kicker">Fin du rappel</p>
+    <h2>Bilan — ${MOD.nom.toLowerCase()}</h2>
+    <div class="stats" style="grid-template-columns:repeat(${cats.length},minmax(0,1fr))">
+      <div class="stat main"><span class="v">${ok} / ${N}</span><span class="l">${ok>1?"situations réussies":"situation réussie"}, dont ${parfait} sans aucune erreur</span></div>
+      ${cats.map(c=>`<div class="stat"><div class="v">${E[c.k]}</div><div class="l">${pl(E[c.k])} ${c.lib}</div></div>`).join("")}
+    </div>
+    <p style="margin-top:16px">${typo(conseil)}</p>
+
+    <div class="sect"><h3>Détail par situation</h3>${map}
+      <div class="legend-row"><span><i class="p"></i>réussie sans erreur</span><span><i class="e"></i>réussie après erreur</span><span><i class="r"></i>correction affichée</span></div>
+    </div>
+
+    <div class="sect"><h3>Ce qu’il faut retenir</h3>${MOD.synth()}</div>
+
+    <div class="sect"><h3>Le réflexe à garder</h3>
+      <ol class="reflex">${MOD.reflex.map(x=>`<li>${typo(x)}</li>`).join("")}</ol>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn ghost" id="again">Recommencer ce rappel</button>
+      <button type="button" class="btn quiet" id="home">Tous les rappels</button>
+    </div>
+  </article>`;
+  const again=document.getElementById("again");
+  again.addEventListener("click",()=>{
+    if(!confirmReset){ confirmReset=true; again.textContent="Confirmer : effacer ce bilan et recommencer"; again.classList.remove("ghost"); return; }
+    state=fresh(state.mod); save(); route();
+  });
+  document.getElementById("home").addEventListener("click",retourAccueil);
+}
+
+route();
+})();
+</script>
+</body>
+</html>
